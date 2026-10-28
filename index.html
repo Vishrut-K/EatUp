@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EatUp - Delicious food delivered fast from your favorite local restaurants. Browse menus, order biryani, pizza, burgers, and more.">
+  <title>EatUp — Delicious Food Delivered Fast</title>
+  
+  <!-- Modern Clean Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- EatUp Stylesheet -->
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       GLOBAL HEADER & NAVIGATION
+       ====================================================================== -->
+  <header class="app-header" id="app-header">
+    <div class="container">
+      <div class="nav-container">
+        
+        <!-- Brand & Location -->
+        <div class="brand-wrapper">
+          <a href="#landing" class="brand-logo" id="nav-brand-logo" title="EatUp Home">
+            <span class="logo-icon">🍔</span>
+            <span>EatUp</span>
+          </a>
+          <div class="location-badge" title="Delivery Location">
+            <span class="loc-pin">📍</span>
+            <span>Bengaluru, KA</span>
+          </div>
+        </div>
+
+        <!-- Navigation Links & User Actions -->
+        <div class="nav-actions">
+          <a href="#landing" class="nav-link" id="nav-link-home">Home</a>
+          <a href="#explore" class="nav-link" id="nav-link-explore">Explore</a>
+          <a href="#orders" class="nav-link" id="nav-link-orders">My Orders</a>
+          
+          <!-- Cart Button -->
+          <button class="cart-btn" id="nav-cart-btn" aria-label="Open Shopping Cart">
+            <span>🛒</span>
+            <span>Cart</span>
+            <span class="cart-badge" id="header-cart-badge">0</span>
+          </button>
+
+          <!-- Auth Actions (Toggled via JS) -->
+          <button class="auth-btn" id="nav-auth-btn">Sign In</button>
+          
+          <div class="user-menu-wrapper" id="nav-user-menu" style="display: none;">
+            <div class="user-badge" id="user-badge-trigger">
+              <div class="avatar-circle" id="user-avatar-initial">U</div>
+              <span id="user-display-name">Alex</span>
+              <span>▾</span>
+            </div>
+            <div class="user-dropdown" id="user-dropdown-menu">
+              <a href="#orders" class="user-dropdown-item" id="user-menu-orders">📦 My Orders</a>
+              <button class="user-dropdown-item logout" id="user-menu-logout">🚪 Sign Out</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       MAIN CONTENT CONTAINER (SPA VIEWS)
+       ====================================================================== -->
+  <main id="app-main">
+
+    <!-- VIEW 1: LANDING PAGE -->
+    <section id="view-landing" class="view-section active">
+      
+      <!-- Hero Section -->
+      <div class="hero-section">
+        <div class="container">
+          <div class="hero-grid">
+            <div class="hero-content">
+              <div class="hero-tag">
+                <span>⚡</span>
+                <span>Fastest 30-Min Food Delivery</span>
+              </div>
+              <h1 class="hero-title">
+                Craving good food? <br>
+                Order from <span class="highlight">EatUp.</span>
+              </h1>
+              <p class="hero-desc">
+                Explore handpicked restaurants, artisanal pizzas, authentic biryanis, healthy bowls, and sweet treats delivered piping hot to your doorstep.
+              </p>
+              
+              <!-- Quick Search & Explore -->
+              <div class="hero-search-box">
+                <input type="text" id="hero-search-input" placeholder="Search for restaurant or dish (e.g. Biryani, Pizza)..." autocomplete="off">
+                <button type="button" id="hero-search-btn">Find Food</button>
+              </div>
+
+              <!-- Quick Highlights -->
+              <div class="hero-stats">
+                <div class="stat-item">
+                  <h4>500+</h4>
+                  <p>Dishes Available</p>
+                </div>
+                <div class="stat-item">
+                  <h4>25 min</h4>
+                  <p>Average Delivery</p>
+                </div>
+                <div class="stat-item">
+                  <h4>4.8 ★</h4>
+                  <p>Customer Rating</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hero Banner Image -->
+            <div class="hero-banner-card">
+              <img 
+                src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&auto=format&fit=crop&q=80" 
+                alt="Delicious Gourmet Food Feast" 
+                class="hero-img-main"
+                loading="eager"
+              >
+              <div class="hero-floating-badge">
+                <div class="floating-icon">🍕</div>
+                <div>
+                  <h4 style="font-weight: 800; font-size: 0.95rem;">Fresh & Piping Hot</h4>
+                  <p style="font-size: 0.8rem; color: var(--text-muted);">From top local kitchens</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categories Quick Strip -->
+      <div class="container section-padding">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">What's on your mind?</h2>
+            <p class="section-subtitle">Pick from popular cravings or explore the full menu</p>
+          </div>
+          <a href="#explore" class="btn-outline">View All</a>
+        </div>
+        
+        <div class="categories-carousel" id="landing-categories-carousel">
+          <!-- Dynamically populated from data.js -->
+        </div>
+
+        <!-- Promotional Deal Banners -->
+        <div class="promos-grid">
+          <div class="promo-card orange">
+            <div>
+              <span class="promo-tag">LIMITED OFFER</span>
+              <h3 class="promo-title">50% OFF Up to ₹100</h3>
+              <p class="promo-desc">Use code <strong>EATUP50</strong> on your first demo order.</p>
+            </div>
+            <div style="font-size: 3.5rem;">🥘</div>
+          </div>
+          <div class="promo-card">
+            <div>
+              <span class="promo-tag">FREE DELIVERY</span>
+              <h3 class="promo-title">Zero Delivery Fee</h3>
+              <p class="promo-desc">On all orders above ₹400 across Bengaluru.</p>
+            </div>
+            <div style="font-size: 3.5rem;">🚀</div>
+          </div>
+        </div>
+
+        <!-- Featured Restaurants Section -->
+        <div style="margin-top: 50px;">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Popular Restaurants Near You</h2>
+              <p class="section-subtitle">Top-rated dining spots with rapid delivery</p>
+            </div>
+            <a href="#explore" class="btn-outline">Explore More (6)</a>
+          </div>
+          <div class="restaurants-grid" id="landing-featured-grid">
+            <!-- Dynamically populated from data.js -->
+          </div>
+        </div>
+
+        <!-- Why Choose EatUp -->
+        <div style="margin-top: 70px;">
+          <div class="section-head" style="justify-content: center; text-align: center;">
+            <div>
+              <h2 class="section-title">Why Order With EatUp?</h2>
+              <p class="section-subtitle">Crafted with care for a seamless college demonstration</p>
+            </div>
+          </div>
+          <div class="features-grid">
+            <div class="feature-box">
+              <div class="feature-icon-wrapper">⚡</div>
+              <h3>Lightning Fast</h3>
+              <p>Hot, freshly prepared food delivered with rapid simulated arrival times.</p>
+            </div>
+            <div class="feature-box">
+              <div class="feature-icon-wrapper">🛡️</div>
+              <h3>Pure Clean Code</h3>
+              <p>Built exclusively using vanilla HTML5, modern CSS3, and standard JavaScript.</p>
+            </div>
+            <div class="feature-box">
+              <div class="feature-icon-wrapper">💾</div>
+              <h3>Persistent Cart & History</h3>
+              <p>All items, sessions, and placed orders survive full browser refreshes.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- VIEW 2: EXPLORE / RESTAURANTS CATALOG -->
+    <section id="view-explore" class="view-section">
+      
+      <!-- Filter & Sort Bar -->
+      <div class="explore-filter-bar">
+        <div class="container">
+          <div class="filter-controls-row">
+            
+            <!-- Live Search -->
+            <div class="search-input-wrapper">
+              <span class="search-icon-inside">🔍</span>
+              <input type="text" id="explore-search-input" placeholder="Search restaurant name, cuisine or food item...">
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="filter-pills-group">
+              <button class="filter-chip" id="filter-veg-btn">
+                <span class="diet-badge veg" style="margin-bottom: 0;"></span>
+                <span>Pure Veg</span>
+              </button>
+              <button class="filter-chip" id="filter-rating-btn">
+                <span>★ 4.5+ Rating</span>
+              </button>
+              <button class="filter-chip" id="filter-fast-btn">
+                <span>⚡ Under 25 mins</span>
+              </button>
+              
+              <!-- Sort Selector -->
+              <select class="sort-select" id="sort-select" aria-label="Sort restaurants">
+                <option value="relevance">Sort: Relevance</option>
+                <option value="rating">Sort: Rating (High to Low)</option>
+                <option value="deliveryTime">Sort: Delivery Time (Fastest)</option>
+                <option value="costAsc">Sort: Price (Low to High)</option>
+              </select>
+            </div>
+
+          </div>
+          
+          <!-- Category Chips -->
+          <div class="categories-carousel" id="explore-category-chips" style="margin-top: 14px; padding-bottom: 4px;">
+            <!-- Rendered by JS -->
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Restaurants Grid -->
+      <div class="container section-padding" style="padding-top: 10px;">
+        <div class="explore-results-meta">
+          <h2 class="results-count" id="explore-results-count">Restaurants in Bengaluru</h2>
+        </div>
+
+        <div class="restaurants-grid" id="explore-restaurants-grid">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Empty Results State -->
+        <div class="empty-state" id="explore-empty-state" style="display: none;">
+          <div class="empty-icon">🍽️</div>
+          <h3 class="empty-title">No matching restaurants found</h3>
+          <p class="empty-subtitle">We couldn't find any restaurants or dishes matching your search filters. Try clearing your filters or searching another term.</p>
+          <button class="btn-primary" id="btn-reset-filters">Reset All Filters</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- VIEW 3: RESTAURANT DETAILS & MENU -->
+    <section id="view-restaurant" class="view-section">
+      <div class="restaurant-view-header">
+        <div class="container">
+          <button class="back-link" id="rest-back-btn">← Back to Restaurants</button>
+          
+          <!-- Restaurant Info Banner -->
+          <div class="rest-header-card" id="restaurant-header-card">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="container menu-section">
+        <!-- Menu Controls -->
+        <div class="menu-filter-sticky">
+          <div class="filter-pills-group">
+            <button class="filter-chip" id="menu-veg-filter">
+              <span class="diet-badge veg" style="margin-bottom: 0;"></span>
+              <span>Veg Only</span>
+            </button>
+            <button class="filter-chip active" id="menu-all-filter">All Menu Items</button>
+          </div>
+          <div class="search-input-wrapper" style="max-width: 300px;">
+            <span class="search-icon-inside">🔍</span>
+            <input type="text" id="menu-search-input" placeholder="Search dishes in menu...">
+          </div>
+        </div>
+
+        <!-- Menu Items List -->
+        <div class="menu-list" id="menu-items-list">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: CHECKOUT SCREEN -->
+    <section id="view-checkout" class="view-section">
+      <div class="container">
+        <button class="back-link" id="checkout-back-btn" style="margin-top: 24px;">← Back to Menu</button>
+        
+        <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 24px;">Complete Your Order</h1>
+        
+        <div class="checkout-grid">
+          
+          <!-- Left Column: Delivery & Payment Details -->
+          <div>
+            <!-- Step 1: Delivery Address -->
+            <div class="checkout-card">
+              <h2><span>📍</span> Delivery Address</h2>
+              <form id="checkout-form">
+                <div class="form-group">
+                  <label class="form-label" for="checkout-name">Recipient Name</label>
+                  <input type="text" id="checkout-name" class="form-input" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="checkout-phone">Contact Phone Number</label>
+                  <input type="tel" id="checkout-phone" class="form-input" placeholder="10-digit mobile number" value="9876543210" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="checkout-address">Complete Street Address</label>
+                  <textarea id="checkout-address" class="form-textarea" rows="3" placeholder="Flat / House no, Street, Area, Landmark" required>Flat 402, Sunshine Residency, 12th Main Road, Bengaluru</textarea>
+                </div>
+              </form>
+            </div>
+
+            <!-- Step 2: Demo Payment Selection -->
+            <div class="checkout-card">
+              <h2><span>💳</span> Select Payment Method</h2>
+              <div class="payment-methods-list">
+                <label class="payment-method-card">
+                  <input type="radio" name="payment-method" value="Cash on Delivery (Demo)" checked>
+                  <div>
+                    <div class="payment-title">💵 Cash on Delivery</div>
+                    <div class="payment-sub">Pay via cash or UPI scanner upon delivery</div>
+                  </div>
+                </label>
+                <label class="payment-method-card">
+                  <input type="radio" name="payment-method" value="UPI / QR Simulation">
+                  <div>
+                    <div class="payment-title">📱 Google Pay / PhonePe / Paytm</div>
+                    <div class="payment-sub">Simulated instant UPI settlement</div>
+                  </div>
+                </label>
+                <label class="payment-method-card">
+                  <input type="radio" name="payment-method" value="Credit / Debit Card (Demo)">
+                  <div>
+                    <div class="payment-title">💳 Credit / Debit Card</div>
+                    <div class="payment-sub">Simulated demo card checkout</div>
+                  </div>
+                </label>
+              </div>
+
+              <div class="demo-payment-alert">
+                <span>ℹ️</span>
+                <span><strong>Demo Evaluation Mode:</strong> No real money or credit card is processed. This is a frontend simulation.</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Order Bill Summary -->
+          <div>
+            <div class="checkout-card" id="checkout-bill-card">
+              <h2><span>🧾</span> Order Summary</h2>
+              
+              <div id="checkout-items-summary" style="margin-bottom: 20px;">
+                <!-- Populated via JS -->
+              </div>
+
+              <!-- Bill Breakdown -->
+              <div class="cart-bill-details" id="checkout-bill-breakdown">
+                <!-- Populated via JS -->
+              </div>
+
+              <button class="btn-primary" id="btn-confirm-place-order" style="width: 100%; margin-top: 24px; padding: 14px; font-size: 1.05rem; justify-content: center;">
+                Place Order Now
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: ORDER CONFIRMATION -->
+    <section id="view-confirmation" class="view-section">
+      <div class="container">
+        <div class="confirmation-card" id="confirmation-container">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 6: MY ORDERS HISTORY -->
+    <section id="view-orders" class="view-section">
+      <div class="container orders-section">
+        <div class="section-head" style="max-width: 840px; margin: 0 auto 28px;">
+          <div>
+            <h1 class="section-title">My Orders</h1>
+            <p class="section-subtitle">View your past orders, delivery details, and items</p>
+          </div>
+        </div>
+
+        <div class="orders-list" id="orders-list-container">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <div class="empty-state" id="orders-empty-state" style="display: none; max-width: 600px; margin: 40px auto;">
+          <div class="empty-icon">🛍️</div>
+          <h3 class="empty-title">No orders placed yet</h3>
+          <p class="empty-subtitle">You haven't placed any orders with EatUp yet. Check out top restaurants and order your favorite meal!</p>
+          <a href="#explore" class="btn-primary">Explore Restaurants</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================================
+       CART SLIDE-OUT DRAWER
+       ====================================================================== -->
+  <div class="drawer-backdrop" id="cart-drawer-backdrop"></div>
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="drawer-header">
+      <h3 class="drawer-title">Your Food Cart</h3>
+      <button class="drawer-close-btn" id="cart-drawer-close" aria-label="Close cart">&times;</button>
+    </div>
+
+    <div class="drawer-body" id="cart-drawer-body">
+      <!-- Populated via JS -->
+    </div>
+
+    <div class="drawer-footer" id="cart-drawer-footer">
+      <button class="btn-checkout-drawer" id="btn-drawer-checkout">
+        <span>Proceed to Checkout</span>
+        <span id="drawer-total-amount">₹0</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ======================================================================
+       AUTH MODAL (LOGIN & SIGNUP)
+       ====================================================================== -->
+  <div class="modal-backdrop" id="auth-modal-backdrop">
+    <div class="modal-window">
+      <button class="modal-close-icon" id="auth-modal-close" aria-label="Close modal">&times;</button>
+      
+      <div class="modal-header">
+        <h3 class="modal-title">Welcome to EatUp</h3>
+        <p class="modal-subtitle">Sign in or create a demo account to order food</p>
+        
+        <div class="modal-tabs">
+          <button class="modal-tab-btn active" id="tab-login-btn">Sign In</button>
+          <button class="modal-tab-btn" id="tab-signup-btn">Create Account</button>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- Quick Demo Login Shortcut for Evaluator -->
+        <div class="demo-login-shortcut-box">
+          <div class="demo-shortcut-text">
+            <strong>College Demo Account</strong><br>
+            demo@eatup.com
+          </div>
+          <button type="button" class="btn-demo-fill" id="btn-demo-login-fill">1-Click Auto Fill</button>
+        </div>
+
+        <!-- Alert messages -->
+        <div class="form-alert" id="auth-form-alert"></div>
+
+        <!-- Login Form -->
+        <form id="form-login">
+          <div class="form-group">
+            <label class="form-label" for="login-email">Email Address</label>
+            <input type="email" id="login-email" class="form-input" placeholder="name@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-password">Password</label>
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="auth-form-submit">Sign In to EatUp</button>
+        </form>
+
+        <!-- Signup Form -->
+        <form id="form-signup" style="display: none;">
+          <div class="form-group">
+            <label class="form-label" for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" class="form-input" placeholder="e.g. Alex Morgan" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-email">Email Address</label>
+            <input type="email" id="signup-email" class="form-input" placeholder="name@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-password">Password (min 6 chars)</label>
+            <input type="password" id="signup-password" class="form-input" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="auth-form-submit">Create My Account</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       RESTAURANT CART CONFLICT MODAL
+       ====================================================================== -->
+  <div class="modal-backdrop" id="conflict-modal-backdrop">
+    <div class="modal-window">
+      <div class="conflict-box">
+        <div class="conflict-icon">🍲</div>
+        <h3 class="modal-title" style="margin-bottom: 8px;">Replace cart items?</h3>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;" id="conflict-modal-msg">
+          Your cart contains items from another restaurant. Would you like to reset your cart to add items from this restaurant?
+        </p>
+        <div class="conflict-actions">
+          <button class="btn-outline" id="conflict-btn-cancel">Cancel</button>
+          <button class="btn-primary" id="conflict-btn-confirm">Start Fresh Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       TOAST NOTIFICATIONS CONTAINER
+       ====================================================================== -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- ======================================================================
+       GLOBAL FOOTER
+       ====================================================================== -->
+  <footer class="app-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#landing" class="brand-logo" style="color: #fff;">
+            <span>🍔</span>
+            <span>EatUp</span>
+          </a>
+          <p class="footer-desc">
+            A modern, responsive food delivery web application built for college project evaluation. 
+            Enjoy seamless ordering and cart persistence with pure frontend technologies.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul class="footer-links">
+            <li><a href="#explore">All Restaurants</a></li>
+            <li><a href="#explore">Biryani Specials</a></li>
+            <li><a href="#explore">Artisanal Pizzas</a></li>
+            <li><a href="#explore">Healthy Bowls</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="#landing">Home</a></li>
+            <li><a href="#orders">My Orders</a></li>
+            <li><a href="#explore">Offers & Deals</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Technologies</h4>
+          <ul class="footer-links">
+            <li>HTML5 Semantic</li>
+            <li>Vanilla CSS3 System</li>
+            <li>Vanilla JavaScript (ES6)</li>
+            <li>LocalStorage Persistence</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 EatUp. Crafted for academic demonstration.</p>
+        <p class="demo-disclaimer">⚡ Demo application: LocalStorage is used for simulated user login, cart, and order records.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Controller -->
+  <script type="module" src="scripts/app.js"></script>
+</body>
+</html>
