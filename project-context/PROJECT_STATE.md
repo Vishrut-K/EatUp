@@ -34,8 +34,8 @@ EatUp/
 ## 3. Implemented Features
 - [x] Initial project context setup (`CHAT_HISTORY.md`, `PROJECT_STATE.md`, `DECISIONS.md`).
 - [x] Base folder structure and semantic HTML shell.
-- [x] Core design system & responsive styling (Warm food palette: Deep coral/orange, charcoal text, clean card elevations).
-- [x] Landing page view (Hero, category pills, search bar, featured spots, promotional banner, features grid).
+- [x] Core design system & responsive styling (Distinct Culinary Jade & Warm Honey Amber palette, clean card elevations, no Swiggy/Zomato copy).
+- [x] Landing page view (Hero, North India / Connaught Place location, category pills with uncropped clearance, featured spots, promotional banner, curated consumer features grid).
 - [x] Demo Authentication system (Signup, Login, 1-Click demo fill shortcut, session persistence, input validation).
 - [x] Restaurant catalog & menu listing with category tabs, rating sort, delivery time sort, veg/non-veg filter.
 - [x] Shopping cart with single-restaurant restriction modal, quantity modification, price computation, dynamic free delivery threshold.

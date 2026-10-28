@@ -6,14 +6,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* Brand Colors */
-  --primary: #FF5200;
-  --primary-hover: #E04800;
-  --primary-light: #FFF1EB;
-  --primary-gradient: linear-gradient(135deg, #FF5200 0%, #FF7A00 100%);
+  /* Brand Colors - Distinct Culinary Jade & Warm Honey Amber (Not Swiggy Orange, Not Zomato Red) */
+  --primary: #0D7A53;
+  --primary-hover: #086041;
+  --primary-light: #EBF7F1;
+  --primary-gradient: linear-gradient(135deg, #0D7A53 0%, #149666 100%);
   
-  --secondary: #FFA726;
-  --accent-gold: #FFB703;
+  --secondary: #D9822B;
+  --accent-gold: #E5A93C;
+  --accent-soft: #FEF7EE;
   
   /* Status & Dietary Colors */
   --veg-green: #15803D;
@@ -21,23 +22,23 @@
   --nonveg-red: #B91C1C;
   --nonveg-bg: #FEE2E2;
   
-  --star-green: #22C55E;
-  --star-green-dark: #16A34A;
+  --star-green: #0D7A53;
+  --star-green-dark: #086041;
   
   /* Neutral Palette */
-  --bg-main: #F8FAFC;
+  --bg-main: #F7FAF8;
   --bg-card: #FFFFFF;
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
-  --border-light: #E2E8F0;
-  --border-subtle: #F1F5F9;
+  --text-primary: #111827;
+  --text-secondary: #4B5563;
+  --text-muted: #8E9BAE;
+  --border-light: #E5EBE7;
+  --border-subtle: #F0F4F1;
   
   /* Elevation Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 16px 32px -4px rgba(255, 82, 0, 0.12), 0 8px 16px -4px rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0 1px 3px 0 rgba(13, 122, 83, 0.05);
+  --shadow-md: 0 4px 10px -1px rgba(13, 122, 83, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 28px -4px rgba(13, 122, 83, 0.12), 0 4px 10px -4px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 16px 32px -4px rgba(13, 122, 83, 0.16), 0 6px 12px -2px rgba(0, 0, 0, 0.05);
   
   /* Dimensions & Radius */
   --radius-sm: 8px;
@@ -356,7 +357,7 @@ img {
    ========================================================================== */
 
 .hero-section {
-  background: linear-gradient(180deg, #FFFFFF 0%, #FFF7ED 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #F0F8F4 100%);
   padding: 60px 0 80px;
   position: relative;
   overflow: hidden;
@@ -419,7 +420,7 @@ img {
 
 .hero-search-box:focus-within {
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(255, 82, 0, 0.15);
+  box-shadow: 0 0 0 4px rgba(13, 122, 83, 0.15);
 }
 
 .hero-search-box input {
@@ -475,36 +476,6 @@ img {
   max-height: 440px;
 }
 
-.hero-floating-badge {
-  position: absolute;
-  bottom: 24px;
-  left: -20px;
-  background: #fff;
-  padding: 14px 20px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  animation: floatAnim 4s ease-in-out infinite;
-}
-
-@keyframes floatAnim {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-.floating-icon {
-  font-size: 2rem;
-  background: var(--primary-light);
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* Category Quick Filter Strip */
 .section-padding {
   padding: 60px 0;
@@ -530,11 +501,13 @@ img {
   margin-top: 4px;
 }
 
+/* Fixed: Added generous top and bottom padding so hover elevation & shadows never get clipped */
 .categories-carousel {
   display: flex;
   gap: 16px;
   overflow-x: auto;
-  padding-bottom: 12px;
+  padding: 10px 6px 18px;
+  margin: -6px -4px 0;
   scrollbar-width: thin;
 }
 
@@ -551,14 +524,16 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   background: #fff;
-  padding: 16px 20px;
+  padding: 18px 22px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-light);
-  min-width: 110px;
+  min-width: 120px;
   transition: all var(--transition-fast);
   cursor: pointer;
+  user-select: none;
 }
 
 .category-pill:hover, .category-pill.active {
@@ -576,6 +551,7 @@ img {
   font-size: 0.9rem;
   font-weight: 700;
   color: var(--text-primary);
+  white-space: nowrap;
 }
 
 /* Promotional Deal Banners */
@@ -587,7 +563,7 @@ img {
 }
 
 .promo-card {
-  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  background: linear-gradient(135deg, #111827 0%, #1F2937 100%);
   color: #fff;
   padding: 28px;
   border-radius: var(--radius-lg);
@@ -599,8 +575,12 @@ img {
   box-shadow: var(--shadow-md);
 }
 
-.promo-card.orange {
+.promo-card.emerald {
   background: var(--primary-gradient);
+}
+
+.promo-card.gold {
+  background: linear-gradient(135deg, #D9822B 0%, #F59E0B 100%);
 }
 
 .promo-tag {
@@ -623,7 +603,7 @@ img {
 
 .promo-desc {
   font-size: 0.85rem;
-  opacity: 0.85;
+  opacity: 0.9;
   margin-top: 4px;
 }
 

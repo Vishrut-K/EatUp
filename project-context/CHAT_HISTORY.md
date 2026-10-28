@@ -112,3 +112,23 @@ This document serves as the persistent, append-only chronological record of all 
   - Committed with descriptive semantic message: `feat: implement complete EatUp food-ordering web application`.
   - Pushed to `origin/main` at `https://github.com/Vishrut-K/EatUp.git`.
 
+---
+
+## Entry 004: UI Polish, Distinct Color Theme & Location Update
+- **Timestamp:** 2026-10-28 17:23 IST
+- **Phase:** Design Iteration & Aesthetic Refinement
+- **User Instruction:**
+  1. Change location to North India.
+  2. Remove unnecessary hero image floater.
+  3. Fix cropping issue on categories div.
+  4. Remove meta mentions ("college demo", "pure clean code", "chat history features") from the user-facing UI.
+  5. Use a new, distinctive color theme (not Swiggy orange, not Zomato red).
+
+- **Actions Taken:**
+  1. **New Brand Color Palette:** Switched from food-orange to an artisanal, gourmet **Culinary Jade & Warm Honey Amber** theme (`#0D7A53` / `#E5A93C` on `#F7FAF8` alabaster surface). Conveys high-end dining, freshness, and quality.
+  2. **Location Update:** Updated delivery location to **Connaught Place, New Delhi** in navigation, promotional banners, and pre-filled checkout address. Updated restaurant addresses in `scripts/data.js` to Connaught Place, Hauz Khas Village, Cyber Hub Gurugram, Karol Bagh, Khan Market, and Sector 29 Gurugram.
+  3. **Cropping Bug Resolved:** Expanded `.categories-carousel` padding (`padding: 10px 6px 18px; margin: -6px -4px 0;`) so hover card elevation (`translateY(-3px)`) and shadows are never clipped by the scroll container.
+  4. **Hero Floater Removed:** Deleted `.hero-floating-badge` completely from `index.html` and `styles/style.css`.
+  5. **UI Copy Cleanup:** Replaced all meta/college/evaluation jargon in the user-facing UI with authentic, commercial consumer value propositions (e.g., "Hygiene Verified", "Lightning Delivery", "Curated Excellence", official copyright footer).
+
+

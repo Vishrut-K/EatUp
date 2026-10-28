@@ -34,7 +34,7 @@ export const RESTAURANTS = [
     featured: true,
     discountBadge: "50% OFF up to ₹100",
     image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80",
-    address: "Koramangala 5th Block, Bengaluru",
+    address: "Connaught Place, Central Delhi",
     menu: [
       {
         id: "rb-101",
@@ -106,7 +106,7 @@ export const RESTAURANTS = [
     featured: true,
     discountBadge: "FREE Garlic Bread on orders > ₹499",
     image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80",
-    address: "Indiranagar 100ft Road, Bengaluru",
+    address: "Hauz Khas Village, South Delhi",
     menu: [
       {
         id: "wf-201",
@@ -178,7 +178,7 @@ export const RESTAURANTS = [
     featured: true,
     discountBadge: "FLAT ₹75 OFF on Burgers",
     image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&auto=format&fit=crop&q=80",
-    address: "HSR Layout Sector 4, Bengaluru",
+    address: "Cyber Hub, DLF Phase 2, Gurugram",
     menu: [
       {
         id: "bc-301",
@@ -239,7 +239,7 @@ export const RESTAURANTS = [
     featured: false,
     discountBadge: "20% OFF on Morning & Evening Combos",
     image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80",
-    address: "Jayanagar 4th Block, Bengaluru",
+    address: "Karol Bagh, New Delhi",
     menu: [
       {
         id: "dk-401",
@@ -289,7 +289,7 @@ export const RESTAURANTS = [
     featured: false,
     discountBadge: "Complimentary Dim Sum on ₹600+",
     image: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=800&auto=format&fit=crop&q=80",
-    address: "MG Road, Bengaluru",
+    address: "Khan Market, New Delhi",
     menu: [
       {
         id: "gw-501",
@@ -339,7 +339,7 @@ export const RESTAURANTS = [
     featured: false,
     discountBadge: "15% OFF on Fitness Bowls",
     image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&auto=format&fit=crop&q=80",
-    address: "Bellandur Outer Ring Road, Bengaluru",
+    address: "Sector 29 Market, Gurugram",
     menu: [
       {
         id: "gg-601",

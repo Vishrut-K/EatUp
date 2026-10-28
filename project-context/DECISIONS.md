@@ -28,13 +28,24 @@
   - Automatically seed a default demo user (`demo@eatup.com` / `password123`) and a "Quick Demo Login" button on the auth screen.
 - **Consequences:** Frictionless evaluation, robust error handling against corrupted storage, easy reset capability.
 
-## ADR-004: Visual Identity and Design System
+## ADR-004: Visual Identity and Design System (Superseded by ADR-005)
+- **Date:** 2026-10-28
+- **Status:** Superseded by ADR-005
+- **Context:** Initial design used food orange palette.
+
+## ADR-005: Distinctive Brand Identity & UI Polish (Culinary Jade & Warm Amber)
 - **Date:** 2026-10-28
 - **Status:** Accepted
-- **Context:** Needs to look modern, appetizing, and polished like Swiggy/Zomato, but maintain its own unique EatUp identity.
+- **Context:** Moving away from standard aggregator color schemes (Swiggy orange `#FC8019`, Zomato red `#E23744`) to create a distinctive, upscale, and gourmet visual brand. Eliminating meta college-demo text and awkward UI floaters.
 - **Decision:**
-  - Primary color: Vibrant Food Coral/Orange (`#FC8019` / `#FF5200`).
-  - Secondary accents: Warm Golden Amber (`#FFB703`) & Leaf Green for Veg items (`#22C55E`), Crimson for Non-Veg (`#EF4444`).
-  - Surface colors: Clean Off-White `#F8FAFC`, Crisp White `#FFFFFF`, Dark Slate text `#0F172A`.
-  - Typography: Native modern font stack with Google Font 'Plus Jakarta Sans' for contemporary feel.
-  - Component Design: Subtle shadows, pill-shaped tags, clean elevation cards, clear dietary badges (standard green dot in square / red triangle in square icons).
+  - **New Palette:**
+    - Primary Brand: Deep Culinary Jade / Forest Emerald (`#0D7A53`, hover: `#086041`, light: `#EBF7F1`). Evokes freshness, gourmet taste, and premium culinary artistry.
+    - Secondary Accent: Warm Sunlit Honey Amber (`#D9822B` / `#E5A93C`).
+    - Surface & Background: Warm Alabaster (`#F7FAF8` and `#FFFFFF`).
+    - Text: Crisp Charcoal Slate (`#111827`) and Muted Olive-Slate (`#4B5563`).
+  - **UI Refinements:**
+    - Removed floating badge on hero image for a cleaner, editorial presentation.
+    - Set location to prominent North India hub: Connaught Place, Central Delhi & Delhi NCR.
+    - Fixed categories carousel cropping by expanding top and bottom container clearance.
+    - Replaced all meta/college/evaluation jargon in the user-facing UI with genuine consumer-focused propositions (Hygiene Verified, Lightning Delivery, Curated Excellence).
+

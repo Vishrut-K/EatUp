@@ -403,7 +403,7 @@ function renderExploreRestaurants() {
     el.exploreResultsCount.textContent = "0 restaurants found";
   } else {
     el.exploreEmptyState.style.display = "none";
-    el.exploreResultsCount.textContent = `Showing ${filtered.length} restaurant${filtered.length > 1 ? "s" : ""} in Bengaluru`;
+    el.exploreResultsCount.textContent = `Showing ${filtered.length} restaurant${filtered.length > 1 ? "s" : ""} in Delhi NCR`;
     el.exploreRestaurantsGrid.innerHTML = filtered.map(r => createRestaurantCardHTML(r)).join("");
   }
 }
