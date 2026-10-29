@@ -51,7 +51,7 @@
           <!-- Auth Actions (Toggled via JS) -->
           <button class="auth-btn" id="nav-auth-btn">Sign In</button>
           
-          <div class="user-menu-wrapper" id="nav-user-menu" style="display: none;">
+          <div class="user-menu-wrapper hidden" id="nav-user-menu">
             <div class="user-badge" id="user-badge-trigger">
               <div class="avatar-circle" id="user-avatar-initial">U</div>
               <span id="user-display-name">Alex</span>
@@ -117,7 +117,7 @@
               </div>
             </div>
 
-            <!-- Hero Banner Image (Cleaned: Unnecessary floating badge removed) -->
+            <!-- Hero Banner Image -->
             <div class="hero-banner-card">
               <img 
                 src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&auto=format&fit=crop&q=80" 
@@ -144,7 +144,7 @@
           <!-- Dynamically populated from data.js -->
         </div>
 
-        <!-- Promotional Deal Banners (Styled with new Emerald & Gold Palette) -->
+        <!-- Promotional Deal Banners -->
         <div class="promos-grid">
           <div class="promo-card emerald">
             <div>
@@ -152,7 +152,7 @@
               <h3 class="promo-title">50% OFF Up to ₹100</h3>
               <p class="promo-desc">Apply code <strong>EATUP50</strong> on your first order.</p>
             </div>
-            <div style="font-size: 3.5rem;">🥘</div>
+            <div class="promo-icon">🥘</div>
           </div>
           <div class="promo-card gold">
             <div>
@@ -160,12 +160,12 @@
               <h3 class="promo-title">Zero Delivery Fee</h3>
               <p class="promo-desc">On all orders above ₹400 across Delhi NCR.</p>
             </div>
-            <div style="font-size: 3.5rem;">🚀</div>
+            <div class="promo-icon">🚀</div>
           </div>
         </div>
 
         <!-- Featured Restaurants Section -->
-        <div style="margin-top: 50px;">
+        <div class="mt-lg">
           <div class="section-head">
             <div>
               <h2 class="section-title">Popular Restaurants in Delhi NCR</h2>
@@ -178,11 +178,14 @@
           </div>
         </div>
 
-        <!-- Why Choose EatUp (Cleaned: Authentic Consumer Value Proposition) -->
-        <div style="margin-top: 70px;">
-          <div class="section-head" style="justify-content: center; text-align: center;">
+        <!-- Why Choose EatUp -->
+        <div class="mt-xl">
+          <div class="section-head justify-center text-center">
             <div>
               <h2 class="section-title">Why Order With EatUp?</h2>
+              <p class="section-subtitle">Delivering culinary happiness across the capital</p>
+            </div>
+          </div>
               <p class="section-subtitle">Delivering culinary happiness across the capital</p>
             </div>
           </div>
@@ -226,7 +229,7 @@
             <!-- Filter Controls -->
             <div class="filter-pills-group">
               <button class="filter-chip" id="filter-veg-btn">
-                <span class="diet-badge veg" style="margin-bottom: 0;"></span>
+                <span class="diet-badge veg"></span>
                 <span>Pure Veg</span>
               </button>
               <button class="filter-chip" id="filter-rating-btn">
@@ -248,7 +251,7 @@
           </div>
           
           <!-- Category Chips -->
-          <div class="categories-carousel" id="explore-category-chips" style="margin-top: 14px; padding: 8px 4px 14px;">
+          <div class="categories-carousel explore-chips" id="explore-category-chips">
             <!-- Rendered by JS -->
           </div>
 
@@ -256,7 +259,7 @@
       </div>
 
       <!-- Restaurants Grid -->
-      <div class="container section-padding" style="padding-top: 10px;">
+      <div class="container section-padding pt-sm">
         <div class="explore-results-meta">
           <h2 class="results-count" id="explore-results-count">Restaurants in Delhi NCR</h2>
         </div>
@@ -266,7 +269,7 @@
         </div>
 
         <!-- Empty Results State -->
-        <div class="empty-state" id="explore-empty-state" style="display: none;">
+        <div class="empty-state hidden" id="explore-empty-state">
           <div class="empty-icon">🍽️</div>
           <h3 class="empty-title">No matching restaurants found</h3>
           <p class="empty-subtitle">We couldn't find any restaurants or dishes matching your search filters. Try clearing your filters or searching another term.</p>
@@ -294,12 +297,12 @@
         <div class="menu-filter-sticky">
           <div class="filter-pills-group">
             <button class="filter-chip" id="menu-veg-filter">
-              <span class="diet-badge veg" style="margin-bottom: 0;"></span>
+              <span class="diet-badge veg"></span>
               <span>Veg Only</span>
             </button>
             <button class="filter-chip active" id="menu-all-filter">All Menu Items</button>
           </div>
-          <div class="search-input-wrapper" style="max-width: 300px;">
+          <div class="search-input-wrapper max-w-xs">
             <span class="search-icon-inside">🔍</span>
             <input type="text" id="menu-search-input" placeholder="Search dishes in menu...">
           </div>
@@ -315,9 +318,9 @@
     <!-- VIEW 4: CHECKOUT SCREEN -->
     <section id="view-checkout" class="view-section">
       <div class="container">
-        <button class="back-link" id="checkout-back-btn" style="margin-top: 24px;">← Back to Menu</button>
+        <button class="back-link mt-md" id="checkout-back-btn">← Back to Menu</button>
         
-        <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 24px;">Complete Your Order</h1>
+        <h1 class="page-title">Complete Your Order</h1>
         
         <div class="checkout-grid">
           
@@ -368,11 +371,6 @@
                   </div>
                 </label>
               </div>
-
-              <div class="demo-payment-alert">
-                <span>ℹ️</span>
-                <span><strong>Demo Evaluation Mode:</strong> No real money or credit card is processed. This is a frontend simulation.</span>
-              </div>
             </div>
 
           </div>
@@ -382,7 +380,7 @@
             <div class="checkout-card" id="checkout-bill-card">
               <h2><span>🧾</span> Order Summary</h2>
               
-              <div id="checkout-items-summary" style="margin-bottom: 20px;">
+              <div id="checkout-items-summary" class="mb-md">
                 <!-- Populated via JS -->
               </div>
 
@@ -391,7 +389,7 @@
                 <!-- Populated via JS -->
               </div>
 
-              <button class="btn-primary" id="btn-confirm-place-order" style="width: 100%; margin-top: 24px; padding: 14px; font-size: 1.05rem; justify-content: center;">
+              <button class="btn-primary btn-place-order" id="btn-confirm-place-order">
                 Place Order Now
               </button>
             </div>
@@ -413,7 +411,7 @@
     <!-- VIEW 6: MY ORDERS HISTORY -->
     <section id="view-orders" class="view-section">
       <div class="container orders-section">
-        <div class="section-head" style="max-width: 840px; margin: 0 auto 28px;">
+        <div class="section-head max-w-lg mx-auto mb-md">
           <div>
             <h1 class="section-title">My Orders</h1>
             <p class="section-subtitle">View your past orders, delivery details, and items</p>
@@ -424,7 +422,7 @@
           <!-- Populated dynamically via JS -->
         </div>
 
-        <div class="empty-state" id="orders-empty-state" style="display: none; max-width: 600px; margin: 40px auto;">
+        <div class="empty-state max-w-md mx-auto hidden" id="orders-empty-state">
           <div class="empty-icon">🛍️</div>
           <h3 class="empty-title">No orders placed yet</h3>
           <p class="empty-subtitle">You haven't placed any orders with EatUp yet. Check out top restaurants and order your favorite meal!</p>
@@ -502,7 +500,7 @@
         </form>
 
         <!-- Signup Form -->
-        <form id="form-signup" style="display: none;">
+        <form id="form-signup" class="hidden">
           <div class="form-group">
             <label class="form-label" for="signup-name">Full Name</label>
             <input type="text" id="signup-name" class="form-input" placeholder="e.g. Alex Morgan" required>
@@ -529,8 +527,8 @@
     <div class="modal-window">
       <div class="conflict-box">
         <div class="conflict-icon">🍲</div>
-        <h3 class="modal-title" style="margin-bottom: 8px;">Replace cart items?</h3>
-        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;" id="conflict-modal-msg">
+        <h3 class="modal-title mb-sm">Replace cart items?</h3>
+        <p class="conflict-desc" id="conflict-modal-msg">
           Your cart contains items from another restaurant. Would you like to reset your cart to add items from this restaurant?
         </p>
         <div class="conflict-actions">
@@ -553,7 +551,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a href="#landing" class="brand-logo" style="color: #fff;">
+          <a href="#landing" class="brand-logo footer-logo">
             <span>🍔</span>
             <span>EatUp</span>
           </a>
@@ -590,7 +588,7 @@
       </div>
       <div class="footer-bottom">
         <p>&copy; 2026 EatUp Technologies Pvt. Ltd. All rights reserved.</p>
-        <p style="font-size: 0.8rem; color: #64748B; margin-top: 4px;">Delivering culinary excellence across Connaught Place, South Delhi, Gurugram & Noida.</p>
+        <p class="footer-tagline">Delivering culinary excellence across Connaught Place, South Delhi, Gurugram & Noida.</p>
       </div>
     </div>
   </footer>

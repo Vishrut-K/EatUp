@@ -108,6 +108,30 @@ img {
   width: 100%;
 }
 
+/* Helper Utilities */
+.hidden { display: none !important; }
+.text-center { text-align: center; }
+.justify-center { justify-content: center; }
+.mt-sm { margin-top: 14px; }
+.mt-md { margin-top: 24px; }
+.mt-lg { margin-top: 50px; }
+.mt-xl { margin-top: 70px; }
+.mb-sm { margin-bottom: 8px; }
+.mb-md { margin-bottom: 20px; }
+.pt-sm { padding-top: 10px; }
+.page-title { font-size: 2rem; font-weight: 800; margin-bottom: 24px; }
+.explore-chips { margin-top: 14px; padding: 8px 4px 14px; }
+.promo-icon { font-size: 3.5rem; line-height: 1; }
+.w-full { width: 100%; }
+.max-w-xs { max-width: 300px; }
+.max-w-md { max-width: 600px; }
+.max-w-lg { max-width: 840px; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.btn-place-order { width: 100%; margin-top: 24px; padding: 14px; font-size: 1.05rem; justify-content: center; }
+.conflict-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+.footer-logo { color: #fff; }
+.footer-tagline { font-size: 0.8rem; color: #64748B; margin-top: 4px; }
+
 /* ==========================================================================
    NAVIGATION BAR
    ========================================================================== */

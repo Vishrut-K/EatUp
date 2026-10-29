@@ -21,6 +21,9 @@ import {
   placeOrder
 } from "./storage.js";
 
+// Helper for element selection by ID
+const $ = (id) => document.getElementById(id);
+
 /* ==========================================================================
    APP STATE
    ========================================================================== */
@@ -35,111 +38,7 @@ const state = {
   filterFastDelivery: false,
   sortOption: "relevance",
   menuVegOnly: false,
-  pendingConflictItem: null // Temp item during restaurant conflict prompt
-};
-
-/* ==========================================================================
-   DOM ELEMENTS
-   ========================================================================== */
-const el = {
-  header: document.getElementById("app-header"),
-  navLinks: {
-    home: document.getElementById("nav-link-home"),
-    explore: document.getElementById("nav-link-explore"),
-    orders: document.getElementById("nav-link-orders")
-  },
-  headerCartBadge: document.getElementById("header-cart-badge"),
-  navCartBtn: document.getElementById("nav-cart-btn"),
-  navAuthBtn: document.getElementById("nav-auth-btn"),
-  navUserMenu: document.getElementById("nav-user-menu"),
-  userDisplayName: document.getElementById("user-display-name"),
-  userAvatarInitial: document.getElementById("user-avatar-initial"),
-  userBadgeTrigger: document.getElementById("user-badge-trigger"),
-  userDropdownMenu: document.getElementById("user-dropdown-menu"),
-  userMenuLogout: document.getElementById("user-menu-logout"),
-
-  // Views
-  views: {
-    landing: document.getElementById("view-landing"),
-    explore: document.getElementById("view-explore"),
-    restaurant: document.getElementById("view-restaurant"),
-    checkout: document.getElementById("view-checkout"),
-    confirmation: document.getElementById("view-confirmation"),
-    orders: document.getElementById("view-orders")
-  },
-
-  // Landing View Elements
-  heroSearchInput: document.getElementById("hero-search-input"),
-  heroSearchBtn: document.getElementById("hero-search-btn"),
-  landingCategoriesCarousel: document.getElementById("landing-categories-carousel"),
-  landingFeaturedGrid: document.getElementById("landing-featured-grid"),
-
-  // Explore View Elements
-  exploreSearchInput: document.getElementById("explore-search-input"),
-  filterVegBtn: document.getElementById("filter-veg-btn"),
-  filterRatingBtn: document.getElementById("filter-rating-btn"),
-  filterFastBtn: document.getElementById("filter-fast-btn"),
-  sortSelect: document.getElementById("sort-select"),
-  exploreCategoryChips: document.getElementById("explore-category-chips"),
-  exploreResultsCount: document.getElementById("explore-results-count"),
-  exploreRestaurantsGrid: document.getElementById("explore-restaurants-grid"),
-  exploreEmptyState: document.getElementById("explore-empty-state"),
-  btnResetFilters: document.getElementById("btn-reset-filters"),
-
-  // Restaurant Menu Elements
-  restBackBtn: document.getElementById("rest-back-btn"),
-  restaurantHeaderCard: document.getElementById("restaurant-header-card"),
-  menuVegFilter: document.getElementById("menu-veg-filter"),
-  menuAllFilter: document.getElementById("menu-all-filter"),
-  menuSearchInput: document.getElementById("menu-search-input"),
-  menuItemsList: document.getElementById("menu-items-list"),
-
-  // Cart Drawer Elements
-  cartDrawerBackdrop: document.getElementById("cart-drawer-backdrop"),
-  cartDrawer: document.getElementById("cart-drawer"),
-  cartDrawerClose: document.getElementById("cart-drawer-close"),
-  cartDrawerBody: document.getElementById("cart-drawer-body"),
-  btnDrawerCheckout: document.getElementById("btn-drawer-checkout"),
-  drawerTotalAmount: document.getElementById("drawer-total-amount"),
-
-  // Checkout View Elements
-  checkoutBackBtn: document.getElementById("checkout-back-btn"),
-  checkoutForm: document.getElementById("checkout-form"),
-  checkoutName: document.getElementById("checkout-name"),
-  checkoutPhone: document.getElementById("checkout-phone"),
-  checkoutAddress: document.getElementById("checkout-address"),
-  checkoutItemsSummary: document.getElementById("checkout-items-summary"),
-  checkoutBillBreakdown: document.getElementById("checkout-bill-breakdown"),
-  btnConfirmPlaceOrder: document.getElementById("btn-confirm-place-order"),
-
-  // Confirmation View Elements
-  confirmationContainer: document.getElementById("confirmation-container"),
-
-  // Orders View Elements
-  ordersListContainer: document.getElementById("orders-list-container"),
-  ordersEmptyState: document.getElementById("orders-empty-state"),
-
-  // Modals
-  authModalBackdrop: document.getElementById("auth-modal-backdrop"),
-  authModalClose: document.getElementById("auth-modal-close"),
-  tabLoginBtn: document.getElementById("tab-login-btn"),
-  tabSignupBtn: document.getElementById("tab-signup-btn"),
-  btnDemoLoginFill: document.getElementById("btn-demo-login-fill"),
-  authFormAlert: document.getElementById("auth-form-alert"),
-  formLogin: document.getElementById("form-login"),
-  loginEmail: document.getElementById("login-email"),
-  loginPassword: document.getElementById("login-password"),
-  formSignup: document.getElementById("form-signup"),
-  signupName: document.getElementById("signup-name"),
-  signupEmail: document.getElementById("signup-email"),
-  signupPassword: document.getElementById("signup-password"),
-
-  conflictModalBackdrop: document.getElementById("conflict-modal-backdrop"),
-  conflictModalMsg: document.getElementById("conflict-modal-msg"),
-  conflictBtnCancel: document.getElementById("conflict-btn-cancel"),
-  conflictBtnConfirm: document.getElementById("conflict-btn-confirm"),
-
-  toastContainer: document.getElementById("toast-container")
+  pendingConflictItem: null
 };
 
 /* ==========================================================================
@@ -151,35 +50,21 @@ function init() {
   updateCartBadge();
   setupEventListeners();
 
-  // Populate static-driven containers
   renderLandingCategories();
   renderLandingFeatured();
   renderExploreCategories();
 
-  // Handle URL hash routing
   handleRouting();
   window.addEventListener("hashchange", handleRouting);
 
-  // Sync cart badge when storage updates
   window.addEventListener("eatup-cart-updated", () => {
     updateCartBadge();
-    // If cart drawer is open, refresh its content
-    if (el.cartDrawer.classList.contains("open")) {
-      renderCartDrawer();
-    }
-    // If currently looking at restaurant menu, re-render quantities
-    if (state.currentView === "restaurant") {
-      renderRestaurantMenu();
-    }
+    if ($("cart-drawer").classList.contains("open")) renderCartDrawer();
+    if (state.currentView === "restaurant") renderRestaurantMenu();
   });
 
-  // Scroll header styling
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 20) {
-      el.header.classList.add("scrolled");
-    } else {
-      el.header.classList.remove("scrolled");
-    }
+    $("app-header").classList.toggle("scrolled", window.scrollY > 20);
   });
 }
 
@@ -190,22 +75,19 @@ function handleRouting() {
   const hash = window.location.hash || "#landing";
   const [route, param] = hash.split("/");
 
-  // Deactivate all views
-  Object.values(el.views).forEach(v => v.classList.remove("active"));
-  Object.values(el.navLinks).forEach(l => l.classList.remove("active"));
+  document.querySelectorAll(".view-section").forEach(v => v.classList.remove("active"));
+  document.querySelectorAll(".nav-link").forEach(l => l.classList.remove("active"));
 
   if (route === "#explore") {
     state.currentView = "explore";
-    el.views.explore.classList.add("active");
-    el.navLinks.explore.classList.add("active");
+    $("view-explore").classList.add("active");
+    $("nav-link-explore").classList.add("active");
     renderExploreRestaurants();
-    window.scrollTo({ top: 0, behavior: "smooth" });
   } else if (route === "#restaurant" && param) {
     state.currentView = "restaurant";
     state.activeRestaurantId = param;
-    el.views.restaurant.classList.add("active");
+    $("view-restaurant").classList.add("active");
     renderRestaurantDetail(param);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   } else if (route === "#checkout") {
     const cart = getCart();
     if (!cart.items || cart.items.length === 0) {
@@ -214,39 +96,34 @@ function handleRouting() {
       return;
     }
     state.currentView = "checkout";
-    el.views.checkout.classList.add("active");
+    $("view-checkout").classList.add("active");
     renderCheckout();
-    window.scrollTo({ top: 0, behavior: "smooth" });
   } else if (route === "#orders") {
     state.currentView = "orders";
-    el.views.orders.classList.add("active");
-    el.navLinks.orders.classList.add("active");
+    $("view-orders").classList.add("active");
+    $("nav-link-orders").classList.add("active");
     renderOrders();
-    window.scrollTo({ top: 0, behavior: "smooth" });
   } else if (route === "#confirmation") {
     state.currentView = "confirmation";
-    el.views.confirmation.classList.add("active");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    $("view-confirmation").classList.add("active");
   } else {
-    // Default to Landing view
     state.currentView = "landing";
-    el.views.landing.classList.add("active");
-    el.navLinks.home.classList.add("active");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    $("view-landing").classList.add("active");
+    $("nav-link-home").classList.add("active");
   }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 /* ==========================================================================
-   TOAST NOTIFICATIONS
+   TOAST NOTIFICATIONS & HTML ESCAPING
    ========================================================================== */
 export function showToast(message, icon = "✨") {
   const toast = document.createElement("div");
   toast.className = "toast";
   toast.innerHTML = `<span>${icon}</span><span>${escapeHtml(message)}</span>`;
-  el.toastContainer.appendChild(toast);
-  setTimeout(() => {
-    toast.remove();
-  }, 3000);
+  $("toast-container").appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
 }
 
 function escapeHtml(str) {
@@ -260,82 +137,78 @@ function escapeHtml(str) {
 }
 
 /* ==========================================================================
-   AUTHENTICATION UI & LOGIC
+   AUTHENTICATION UI & MODAL
    ========================================================================== */
 function updateAuthUI() {
   const session = getSession();
+  const navAuthBtn = $("nav-auth-btn");
+  const navUserMenu = $("nav-user-menu");
+
   if (session) {
-    el.navAuthBtn.style.display = "none";
-    el.navUserMenu.style.display = "block";
-    el.userDisplayName.textContent = session.name.split(" ")[0];
-    el.userAvatarInitial.textContent = session.name.charAt(0).toUpperCase();
-    if (el.checkoutName) el.checkoutName.value = session.name;
+    navAuthBtn.style.display = "none";
+    navUserMenu.style.display = "block";
+    $("user-display-name").textContent = session.name.split(" ")[0];
+    $("user-avatar-initial").textContent = session.name.charAt(0).toUpperCase();
+    if ($("checkout-name")) $("checkout-name").value = session.name;
   } else {
-    el.navAuthBtn.style.display = "block";
-    el.navUserMenu.style.display = "none";
-    el.userDropdownMenu.classList.remove("open");
+    navAuthBtn.style.display = "block";
+    navUserMenu.style.display = "none";
+    $("user-dropdown-menu").classList.remove("open");
   }
 }
 
-function openAuthModal(mode = "login") {
-  el.authModalBackdrop.classList.add("open");
-  switchAuthTab(mode);
-}
-
-function closeAuthModal() {
-  el.authModalBackdrop.classList.remove("open");
-  setAuthAlert("", "");
+function toggleAuthModal(open, mode = "login") {
+  $("auth-modal-backdrop").classList.toggle("open", open);
+  if (open) switchAuthTab(mode);
+  setAuthAlert("");
 }
 
 function switchAuthTab(mode) {
-  setAuthAlert("", "");
-  if (mode === "login") {
-    el.tabLoginBtn.classList.add("active");
-    el.tabSignupBtn.classList.remove("active");
-    el.formLogin.style.display = "block";
-    el.formSignup.style.display = "none";
-  } else {
-    el.tabLoginBtn.classList.remove("active");
-    el.tabSignupBtn.classList.add("active");
-    el.formLogin.style.display = "none";
-    el.formSignup.style.display = "block";
-  }
+  setAuthAlert("");
+  const isLogin = mode === "login";
+  $("tab-login-btn").classList.toggle("active", isLogin);
+  $("tab-signup-btn").classList.toggle("active", !isLogin);
+  $("form-login").style.display = isLogin ? "block" : "none";
+  $("form-signup").style.display = isLogin ? "none" : "block";
 }
 
 function setAuthAlert(msg, type = "error") {
+  const alert = $("auth-form-alert");
   if (!msg) {
-    el.authFormAlert.style.display = "none";
-    el.authFormAlert.textContent = "";
-    el.authFormAlert.className = "form-alert";
+    alert.style.display = "none";
+    alert.textContent = "";
+    alert.className = "form-alert";
     return;
   }
-  el.authFormAlert.style.display = "block";
-  el.authFormAlert.className = `form-alert ${type}`;
-  el.authFormAlert.textContent = msg;
+  alert.style.display = "block";
+  alert.className = `form-alert ${type}`;
+  alert.textContent = msg;
 }
 
 /* ==========================================================================
    LANDING PAGE RENDERING
    ========================================================================== */
 function renderLandingCategories() {
-  el.landingCategoriesCarousel.innerHTML = CATEGORIES.filter(c => c.id !== "all").map(c => `
-    <div class="category-pill" data-category="${c.id}">
-      <span class="cat-icon">${c.icon}</span>
-      <span class="cat-name">${c.name}</span>
-    </div>
-  `).join("");
+  $("landing-categories-carousel").innerHTML = CATEGORIES
+    .filter(c => c.id !== "all")
+    .map(c => `
+      <div class="category-pill" data-category="${c.id}">
+        <span class="cat-icon">${c.icon}</span>
+        <span class="cat-name">${c.name}</span>
+      </div>
+    `).join("");
 }
 
 function renderLandingFeatured() {
   const featured = RESTAURANTS.filter(r => r.featured);
-  el.landingFeaturedGrid.innerHTML = featured.map(r => createRestaurantCardHTML(r)).join("");
+  $("landing-featured-grid").innerHTML = featured.map(createRestaurantCardHTML).join("");
 }
 
 /* ==========================================================================
    EXPLORE PAGE RENDERING & FILTERS
    ========================================================================== */
 function renderExploreCategories() {
-  el.exploreCategoryChips.innerHTML = CATEGORIES.map(c => `
+  $("explore-category-chips").innerHTML = CATEGORIES.map(c => `
     <button class="filter-chip ${c.id === state.activeCategory ? "active" : ""}" data-cat-chip="${c.id}">
       <span>${c.icon}</span>
       <span>${c.name}</span>
@@ -346,43 +219,32 @@ function renderExploreCategories() {
 function filterAndSortRestaurants() {
   let list = [...RESTAURANTS];
 
-  // 1. Text Search Filter (name, cuisines, or matching dish in menu)
   if (state.searchQuery.trim()) {
     const q = state.searchQuery.toLowerCase().trim();
-    list = list.filter(r => {
-      const matchName = r.name.toLowerCase().includes(q);
-      const matchCuisine = r.cuisine.some(c => c.toLowerCase().includes(q));
-      const matchMenu = r.menu.some(m => m.name.toLowerCase().includes(q));
-      return matchName || matchCuisine || matchMenu;
-    });
+    list = list.filter(r =>
+      r.name.toLowerCase().includes(q) ||
+      r.cuisine.some(c => c.toLowerCase().includes(q)) ||
+      r.menu.some(m => m.name.toLowerCase().includes(q))
+    );
   }
 
-  // 2. Category Filter
   if (state.activeCategory !== "all") {
-    list = list.filter(r => {
-      // Check if cuisine matches category OR if restaurant has dishes in this category
-      const matchCuisine = r.cuisine.some(c => c.toLowerCase().replace(/\s+/g, "-") === state.activeCategory);
-      const matchDish = r.menu.some(m => m.category === state.activeCategory);
-      return matchCuisine || matchDish;
-    });
+    list = list.filter(r =>
+      r.cuisine.some(c => c.toLowerCase().replace(/\s+/g, "-") === state.activeCategory) ||
+      r.menu.some(m => m.category === state.activeCategory)
+    );
   }
 
-  // 3. Pure Veg Filter (restaurant has at least 1 veg item or only veg)
   if (state.filterVegOnly) {
     list = list.filter(r => r.menu.some(m => m.isVeg));
   }
-
-  // 4. Rating 4.5+ Filter
   if (state.filterHighRating) {
     list = list.filter(r => r.rating >= 4.5);
   }
-
-  // 5. Fast Delivery Filter (< 25 min)
   if (state.filterFastDelivery) {
     list = list.filter(r => r.deliveryTimeMinutes <= 25);
   }
 
-  // 6. Sort
   if (state.sortOption === "rating") {
     list.sort((a, b) => b.rating - a.rating);
   } else if (state.sortOption === "deliveryTime") {
@@ -396,15 +258,18 @@ function filterAndSortRestaurants() {
 
 function renderExploreRestaurants() {
   const filtered = filterAndSortRestaurants();
+  const grid = $("explore-restaurants-grid");
+  const empty = $("explore-empty-state");
+  const count = $("explore-results-count");
 
   if (filtered.length === 0) {
-    el.exploreRestaurantsGrid.innerHTML = "";
-    el.exploreEmptyState.style.display = "block";
-    el.exploreResultsCount.textContent = "0 restaurants found";
+    grid.innerHTML = "";
+    empty.style.display = "block";
+    count.textContent = "0 restaurants found";
   } else {
-    el.exploreEmptyState.style.display = "none";
-    el.exploreResultsCount.textContent = `Showing ${filtered.length} restaurant${filtered.length > 1 ? "s" : ""} in Delhi NCR`;
-    el.exploreRestaurantsGrid.innerHTML = filtered.map(r => createRestaurantCardHTML(r)).join("");
+    empty.style.display = "none";
+    count.textContent = `Showing ${filtered.length} restaurant${filtered.length > 1 ? "s" : ""} in Delhi NCR`;
+    grid.innerHTML = filtered.map(createRestaurantCardHTML).join("");
   }
 }
 
@@ -452,8 +317,7 @@ function renderRestaurantDetail(restaurantId) {
     return;
   }
 
-  // Header Banner
-  el.restaurantHeaderCard.innerHTML = `
+  $("restaurant-header-card").innerHTML = `
     <div class="rest-header-details">
       <h1>${escapeHtml(restaurant.name)}</h1>
       <p class="rest-header-cuisines">${restaurant.cuisine.join(", ")}</p>
@@ -480,19 +344,15 @@ function renderRestaurantMenu() {
   const cart = getCart();
   let menu = [...restaurant.menu];
 
-  // Veg filter
-  if (state.menuVegOnly) {
-    menu = menu.filter(m => m.isVeg);
-  }
-
-  // Menu Search
+  if (state.menuVegOnly) menu = menu.filter(m => m.isVeg);
   if (state.menuSearchQuery.trim()) {
     const q = state.menuSearchQuery.toLowerCase().trim();
     menu = menu.filter(m => m.name.toLowerCase().includes(q) || m.description.toLowerCase().includes(q));
   }
 
+  const list = $("menu-items-list");
   if (menu.length === 0) {
-    el.menuItemsList.innerHTML = `
+    list.innerHTML = `
       <div class="empty-state" style="margin: 20px 0;">
         <div class="empty-icon">🥗</div>
         <h3 class="empty-title">No dishes found</h3>
@@ -502,10 +362,10 @@ function renderRestaurantMenu() {
     return;
   }
 
-  el.menuItemsList.innerHTML = menu.map(item => {
-    // Check if this item is in the cart from this restaurant
-    const isThisRestInCart = cart.restaurantId === restaurant.id;
-    const cartItem = isThisRestInCart ? cart.items.find(i => i.id === item.id) : null;
+  const isCartFromThisRest = cart.restaurantId === restaurant.id;
+
+  list.innerHTML = menu.map(item => {
+    const cartItem = isCartFromThisRest ? cart.items.find(i => i.id === item.id) : null;
     const qty = cartItem ? cartItem.qty : 0;
 
     return `
@@ -524,7 +384,7 @@ function renderRestaurantMenu() {
           <img 
             src="${item.image}" 
             alt="${escapeHtml(item.name)}" 
-            class="item-img"
+            class="item-img" 
             loading="lazy"
             onerror="this.onerror=null;this.src='${FALLBACK_FOOD_IMG}'"
           >
@@ -549,29 +409,50 @@ function renderRestaurantMenu() {
    CART OPERATIONS & DRAWER
    ========================================================================== */
 function updateCartBadge() {
-  const totals = getCartTotals();
-  el.headerCartBadge.textContent = totals.itemCount;
+  $("header-cart-badge").textContent = getCartTotals().itemCount;
 }
 
-function openCartDrawer() {
-  renderCartDrawer();
-  el.cartDrawerBackdrop.classList.add("open");
-  el.cartDrawer.classList.add("open");
+function toggleCartDrawer(open) {
+  if (open) renderCartDrawer();
+  $("cart-drawer-backdrop").classList.toggle("open", open);
+  $("cart-drawer").classList.toggle("open", open);
 }
 
-function closeCartDrawer() {
-  el.cartDrawerBackdrop.classList.remove("open");
-  el.cartDrawer.classList.remove("open");
+function renderBillDetailsHTML(totals) {
+  return `
+    <div class="bill-row">
+      <span>Item Subtotal</span>
+      <span>₹${totals.subtotal}</span>
+    </div>
+    <div class="bill-row">
+      <span>Delivery Partner Fee</span>
+      <span>${totals.deliveryFee === 0 ? `<span class="free-tag">FREE</span>` : `₹${totals.deliveryFee}`}</span>
+    </div>
+    <div class="bill-row">
+      <span>Platform Fee</span>
+      <span>₹${totals.platformFee}</span>
+    </div>
+    <div class="bill-row">
+      <span>Government Taxes & GST (5%)</span>
+      <span>₹${totals.gst}</span>
+    </div>
+    <div class="bill-row total">
+      <span>To Pay</span>
+      <span>₹${totals.grandTotal}</span>
+    </div>
+  `;
 }
 
 function renderCartDrawer() {
   const cart = getCart();
   const totals = getCartTotals();
+  const body = $("cart-drawer-body");
+  const checkoutBtn = $("btn-drawer-checkout");
 
-  el.drawerTotalAmount.textContent = `₹${totals.grandTotal}`;
+  $("drawer-total-amount").textContent = `₹${totals.grandTotal}`;
 
   if (!cart.items || cart.items.length === 0) {
-    el.cartDrawerBody.innerHTML = `
+    body.innerHTML = `
       <div class="empty-state" style="border: none; padding: 40px 10px;">
         <div class="empty-icon">🛒</div>
         <h3 class="empty-title">Your cart is empty</h3>
@@ -579,17 +460,16 @@ function renderCartDrawer() {
         <button class="btn-primary" id="btn-cart-browse">Browse Restaurants</button>
       </div>
     `;
-    el.btnDrawerCheckout.disabled = true;
-    el.btnDrawerCheckout.style.opacity = "0.5";
-    el.btnDrawerCheckout.style.cursor = "not-allowed";
+    checkoutBtn.disabled = true;
+    checkoutBtn.style.opacity = "0.5";
+    checkoutBtn.style.cursor = "not-allowed";
     return;
   }
 
-  el.btnDrawerCheckout.disabled = false;
-  el.btnDrawerCheckout.style.opacity = "1";
-  el.btnDrawerCheckout.style.cursor = "pointer";
+  checkoutBtn.disabled = false;
+  checkoutBtn.style.opacity = "1";
+  checkoutBtn.style.cursor = "pointer";
 
-  // Items List
   const itemsHTML = cart.items.map(item => `
     <div class="cart-item-row" data-cart-row-id="${item.id}">
       <span class="diet-badge ${item.isVeg ? "veg" : "non-veg"}"></span>
@@ -608,7 +488,15 @@ function renderCartDrawer() {
     </div>
   `).join("");
 
-  el.cartDrawerBody.innerHTML = `
+  const freeDeliveryMsg = totals.subtotal < 400
+    ? `<div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: var(--radius-sm); padding: 10px 14px; font-size: 0.82rem; color: #1E40AF; margin-bottom: 16px;">
+        💡 Add items worth <strong>₹${400 - totals.subtotal}</strong> more for <strong>FREE Delivery!</strong>
+       </div>`
+    : `<div style="background: var(--veg-bg); border: 1px solid #BBF7D0; border-radius: var(--radius-sm); padding: 10px 14px; font-size: 0.82rem; color: var(--veg-green); margin-bottom: 16px;">
+        🎉 You've unlocked <strong>FREE Delivery!</strong>
+       </div>`;
+
+  body.innerHTML = `
     <div class="cart-restaurant-banner">
       <div>
         <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700;">Ordering from</div>
@@ -616,45 +504,9 @@ function renderCartDrawer() {
       </div>
       <button class="btn-clear-cart" id="btn-clear-cart-action">Clear Cart</button>
     </div>
-
-    <div class="cart-items-list">
-      ${itemsHTML}
-    </div>
-
-    <!-- Free Delivery Prompt -->
-    ${totals.subtotal < 400 ? `
-      <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: var(--radius-sm); padding: 10px 14px; font-size: 0.82rem; color: #1E40AF; margin-bottom: 16px;">
-        💡 Add items worth <strong>₹${400 - totals.subtotal}</strong> more for <strong>FREE Delivery!</strong>
-      </div>
-    ` : `
-      <div style="background: var(--veg-bg); border: 1px solid #BBF7D0; border-radius: var(--radius-sm); padding: 10px 14px; font-size: 0.82rem; color: var(--veg-green); margin-bottom: 16px;">
-        🎉 You've unlocked <strong>FREE Delivery!</strong>
-      </div>
-    `}
-
-    <!-- Bill Details -->
-    <div class="cart-bill-details">
-      <div class="bill-row">
-        <span>Item Subtotal</span>
-        <span>₹${totals.subtotal}</span>
-      </div>
-      <div class="bill-row">
-        <span>Delivery Partner Fee</span>
-        <span>${totals.deliveryFee === 0 ? `<span class="free-tag">FREE</span>` : `₹${totals.deliveryFee}`}</span>
-      </div>
-      <div class="bill-row">
-        <span>Platform Fee</span>
-        <span>₹${totals.platformFee}</span>
-      </div>
-      <div class="bill-row">
-        <span>Government Taxes & GST (5%)</span>
-        <span>₹${totals.gst}</span>
-      </div>
-      <div class="bill-row total">
-        <span>To Pay</span>
-        <span>₹${totals.grandTotal}</span>
-      </div>
-    </div>
+    <div class="cart-items-list">${itemsHTML}</div>
+    ${freeDeliveryMsg}
+    <div class="cart-bill-details">${renderBillDetailsHTML(totals)}</div>
   `;
 }
 
@@ -663,30 +515,27 @@ function handleAddToCartRequest(restaurant, item) {
 
   if (result.conflict) {
     state.pendingConflictItem = { restaurant, item };
-    el.conflictModalMsg.innerHTML = `
+    $("conflict-modal-msg").innerHTML = `
       Your cart contains delicious food from <strong>${escapeHtml(result.existingRestaurant)}</strong>.<br><br>
       Would you like to discard those and start a fresh order from <strong>${escapeHtml(result.newRestaurant)}</strong>?
     `;
-    el.conflictModalBackdrop.classList.add("open");
+    $("conflict-modal-backdrop").classList.add("open");
   } else {
     showToast(`Added "${item.name}" to cart!`, "🛒");
   }
 }
 
 /* ==========================================================================
-   CHECKOUT RENDERING & SUBMISSION
+   CHECKOUT RENDERING & ORDER SUBMISSION
    ========================================================================== */
 function renderCheckout() {
   const cart = getCart();
   const totals = getCartTotals();
   const session = getSession();
 
-  if (session && el.checkoutName) {
-    el.checkoutName.value = session.name;
-  }
+  if (session && $("checkout-name")) $("checkout-name").value = session.name;
 
-  // Summary items list
-  el.checkoutItemsSummary.innerHTML = `
+  $("checkout-items-summary").innerHTML = `
     <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 12px; color: var(--primary);">
       From: ${escapeHtml(cart.restaurantName)} (${totals.itemCount} items)
     </div>
@@ -700,42 +549,19 @@ function renderCheckout() {
     </div>
   `;
 
-  // Bill breakdown
-  el.checkoutBillBreakdown.innerHTML = `
-    <div class="bill-row">
-      <span>Item Subtotal</span>
-      <span>₹${totals.subtotal}</span>
-    </div>
-    <div class="bill-row">
-      <span>Delivery Fee</span>
-      <span>${totals.deliveryFee === 0 ? `<span class="free-tag">FREE</span>` : `₹${totals.deliveryFee}`}</span>
-    </div>
-    <div class="bill-row">
-      <span>Platform Fee</span>
-      <span>₹${totals.platformFee}</span>
-    </div>
-    <div class="bill-row">
-      <span>GST (5%)</span>
-      <span>₹${totals.gst}</span>
-    </div>
-    <div class="bill-row total">
-      <span>Total to Pay</span>
-      <span>₹${totals.grandTotal}</span>
-    </div>
-  `;
+  $("checkout-bill-breakdown").innerHTML = renderBillDetailsHTML(totals);
 }
 
 function handlePlaceOrder() {
-  const session = getSession();
-  if (!session) {
+  if (!getSession()) {
     showToast("Please sign in to place your order.");
-    openAuthModal("login");
+    toggleAuthModal(true, "login");
     return;
   }
 
-  const name = el.checkoutName.value.trim();
-  const phone = el.checkoutPhone.value.trim();
-  const address = el.checkoutAddress.value.trim();
+  const name = $("checkout-name").value.trim();
+  const phone = $("checkout-phone").value.trim();
+  const address = $("checkout-address").value.trim();
 
   if (!name || !phone || !address) {
     showToast("Please fill in all delivery details.");
@@ -745,13 +571,7 @@ function handlePlaceOrder() {
   const paymentMethodInput = document.querySelector('input[name="payment-method"]:checked');
   const paymentMethod = paymentMethodInput ? paymentMethodInput.value : "Cash on Delivery";
 
-  const result = placeOrder({
-    name,
-    phone,
-    address,
-    paymentMethod
-  });
-
+  const result = placeOrder({ name, phone, address, paymentMethod });
   if (result.success) {
     renderConfirmation(result.order);
     window.location.hash = "#confirmation";
@@ -765,7 +585,7 @@ function handlePlaceOrder() {
    CONFIRMATION SCREEN RENDERING
    ========================================================================== */
 function renderConfirmation(order) {
-  el.confirmationContainer.innerHTML = `
+  $("confirmation-container").innerHTML = `
     <div class="success-badge-anim">✓</div>
     <h1 class="confirmation-title">Order Placed Successfully!</h1>
     <p class="confirmation-subtitle">
@@ -818,9 +638,11 @@ function renderConfirmation(order) {
    MY ORDERS VIEW
    ========================================================================== */
 function renderOrders() {
-  const session = getSession();
-  if (!session) {
-    el.ordersListContainer.innerHTML = `
+  const container = $("orders-list-container");
+  const empty = $("orders-empty-state");
+
+  if (!getSession()) {
+    container.innerHTML = `
       <div class="empty-state" style="max-width: 600px; margin: 40px auto;">
         <div class="empty-icon">🔐</div>
         <h3 class="empty-title">Please Sign In</h3>
@@ -828,25 +650,24 @@ function renderOrders() {
         <button class="btn-primary" id="btn-orders-login">Sign In Now</button>
       </div>
     `;
-    el.ordersEmptyState.style.display = "none";
-    document.getElementById("btn-orders-login")?.addEventListener("click", () => openAuthModal("login"));
+    empty.style.display = "none";
+    $("btn-orders-login")?.addEventListener("click", () => toggleAuthModal(true, "login"));
     return;
   }
 
   const orders = getOrders();
   if (orders.length === 0) {
-    el.ordersListContainer.innerHTML = "";
-    el.ordersEmptyState.style.display = "block";
+    container.innerHTML = "";
+    empty.style.display = "block";
     return;
   }
 
-  el.ordersEmptyState.style.display = "none";
-  el.ordersListContainer.innerHTML = orders.map(o => {
+  empty.style.display = "none";
+  container.innerHTML = orders.map(o => {
     const dateFormatted = new Date(o.createdAt).toLocaleString("en-US", {
       dateStyle: "medium",
       timeStyle: "short"
     });
-
     const itemsSummary = o.items.map(i => `${i.qty}x ${escapeHtml(i.name)}`).join(", ");
 
     return `
@@ -863,18 +684,14 @@ function renderOrders() {
           ${escapeHtml(o.restaurantName)}
         </div>
 
-        <div class="order-items-snippet">
-          ${itemsSummary}
-        </div>
+        <div class="order-items-snippet">${itemsSummary}</div>
 
         <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">
           📍 Delivered to: ${escapeHtml(o.deliveryAddress)}
         </div>
 
         <div class="order-card-footer">
-          <div class="order-total-amount">
-            Total Paid: ₹${o.totals.grandTotal}
-          </div>
+          <div class="order-total-amount">Total Paid: ₹${o.totals.grandTotal}</div>
           <button class="btn-outline" data-reorder-id="${o.orderId}" style="font-size: 0.85rem; padding: 6px 16px;">
             Reorder Dishes
           </button>
@@ -885,8 +702,7 @@ function renderOrders() {
 }
 
 function handleReorder(orderId) {
-  const orders = getOrders();
-  const order = orders.find(o => o.orderId === orderId);
+  const order = getOrders().find(o => o.orderId === orderId);
   if (!order) return;
 
   const restaurant = RESTAURANTS.find(r => r.id === order.restaurantId);
@@ -895,93 +711,82 @@ function handleReorder(orderId) {
     return;
   }
 
-  // Clear current cart and load items from this previous order
   clearCart();
   order.items.forEach(item => {
     addToCart(restaurant, item);
-    // adjust qty if greater than 1
-    if (item.qty > 1) {
-      updateCartItemQty(item.id, item.qty - 1);
-    }
+    if (item.qty > 1) updateCartItemQty(item.id, item.qty - 1);
   });
 
   showToast(`Loaded ${order.items.length} items from ${restaurant.name} into cart!`, "🛍️");
-  openCartDrawer();
+  toggleCartDrawer(true);
 }
 
 /* ==========================================================================
    EVENT LISTENERS SETUP
    ========================================================================== */
 function setupEventListeners() {
-  // Navigation & Drawer Triggers
-  el.navCartBtn.addEventListener("click", openCartDrawer);
-  el.cartDrawerClose.addEventListener("click", closeCartDrawer);
-  el.cartDrawerBackdrop.addEventListener("click", closeCartDrawer);
+  // Navigation & Drawer
+  $("nav-cart-btn").addEventListener("click", () => toggleCartDrawer(true));
+  $("cart-drawer-close").addEventListener("click", () => toggleCartDrawer(false));
+  $("cart-drawer-backdrop").addEventListener("click", () => toggleCartDrawer(false));
 
   // User Profile Dropdown
-  el.userBadgeTrigger?.addEventListener("click", (e) => {
+  $("user-badge-trigger")?.addEventListener("click", (e) => {
     e.stopPropagation();
-    el.userDropdownMenu.classList.toggle("open");
+    $("user-dropdown-menu").classList.toggle("open");
   });
 
   document.addEventListener("click", () => {
-    el.userDropdownMenu?.classList.remove("open");
+    $("user-dropdown-menu")?.classList.remove("open");
   });
 
-  el.userMenuLogout.addEventListener("click", () => {
+  $("user-menu-logout").addEventListener("click", () => {
     clearSession();
     updateAuthUI();
     showToast("Signed out successfully.");
     window.location.hash = "#landing";
   });
 
-  // Auth Modal Triggers
-  el.navAuthBtn.addEventListener("click", () => openAuthModal("login"));
-  el.authModalClose.addEventListener("click", closeAuthModal);
-  el.authModalBackdrop.addEventListener("click", (e) => {
-    if (e.target === el.authModalBackdrop) closeAuthModal();
+  // Auth Modal
+  $("nav-auth-btn").addEventListener("click", () => toggleAuthModal(true, "login"));
+  $("auth-modal-close").addEventListener("click", () => toggleAuthModal(false));
+  $("auth-modal-backdrop").addEventListener("click", (e) => {
+    if (e.target === $("auth-modal-backdrop")) toggleAuthModal(false);
   });
 
-  el.tabLoginBtn.addEventListener("click", () => switchAuthTab("login"));
-  el.tabSignupBtn.addEventListener("click", () => switchAuthTab("signup"));
+  $("tab-login-btn").addEventListener("click", () => switchAuthTab("login"));
+  $("tab-signup-btn").addEventListener("click", () => switchAuthTab("signup"));
 
-  // 1-Click Demo Fill
-  el.btnDemoLoginFill.addEventListener("click", () => {
+  $("btn-demo-login-fill").addEventListener("click", () => {
     const creds = getDemoCredentials();
-    el.loginEmail.value = creds.email;
-    el.loginPassword.value = creds.password;
+    $("login-email").value = creds.email;
+    $("login-password").value = creds.password;
     setAuthAlert("Demo credentials filled! Click 'Sign In' below.", "success");
   });
 
-  // Login Form Submit
-  el.formLogin.addEventListener("submit", (e) => {
+  $("form-login").addEventListener("submit", (e) => {
     e.preventDefault();
-    const email = el.loginEmail.value.trim();
-    const password = el.loginPassword.value;
-    const result = loginUser(email, password);
-
+    const result = loginUser($("login-email").value.trim(), $("login-password").value);
     if (result.success) {
       updateAuthUI();
-      closeAuthModal();
+      toggleAuthModal(false);
       showToast(`Welcome back, ${result.session.name}! 👋`);
     } else {
       setAuthAlert(result.message, "error");
     }
   });
 
-  // Signup Form Submit
-  el.formSignup.addEventListener("submit", (e) => {
+  $("form-signup").addEventListener("submit", (e) => {
     e.preventDefault();
-    const name = el.signupName.value.trim();
-    const email = el.signupEmail.value.trim();
-    const password = el.signupPassword.value;
+    const name = $("signup-name").value.trim();
+    const email = $("signup-email").value.trim();
+    const password = $("signup-password").value;
     const result = registerUser(name, email, password);
 
     if (result.success) {
-      // Auto login
       loginUser(email, password);
       updateAuthUI();
-      closeAuthModal();
+      toggleAuthModal(false);
       showToast(`Account created! Welcome to EatUp, ${name}! 🎉`);
     } else {
       setAuthAlert(result.message, "error");
@@ -989,59 +794,48 @@ function setupEventListeners() {
   });
 
   // Hero Search
-  el.heroSearchBtn.addEventListener("click", () => {
-    const q = el.heroSearchInput.value.trim();
+  const performHeroSearch = () => {
+    const q = $("hero-search-input").value.trim();
     state.searchQuery = q;
-    el.exploreSearchInput.value = q;
+    $("explore-search-input").value = q;
     window.location.hash = "#explore";
-  });
-
-  el.heroSearchInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      el.heroSearchBtn.click();
-    }
+  };
+  $("hero-search-btn").addEventListener("click", performHeroSearch);
+  $("hero-search-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") performHeroSearch();
   });
 
   // Category Carousel Clicks (Landing)
-  el.landingCategoriesCarousel.addEventListener("click", (e) => {
+  $("landing-categories-carousel").addEventListener("click", (e) => {
     const card = e.target.closest(".category-pill");
     if (!card) return;
-    const cat = card.dataset.category;
-    state.activeCategory = cat;
+    state.activeCategory = card.dataset.category;
     renderExploreCategories();
     window.location.hash = "#explore";
   });
 
   // Explore Filter Controls
-  el.exploreSearchInput.addEventListener("input", (e) => {
+  $("explore-search-input").addEventListener("input", (e) => {
     state.searchQuery = e.target.value;
     renderExploreRestaurants();
   });
 
-  el.filterVegBtn.addEventListener("click", () => {
-    state.filterVegOnly = !state.filterVegOnly;
-    el.filterVegBtn.classList.toggle("active", state.filterVegOnly);
+  const toggleFilter = (btnId, stateProp) => {
+    state[stateProp] = !state[stateProp];
+    $(btnId).classList.toggle("active", state[stateProp]);
     renderExploreRestaurants();
-  });
+  };
 
-  el.filterRatingBtn.addEventListener("click", () => {
-    state.filterHighRating = !state.filterHighRating;
-    el.filterRatingBtn.classList.toggle("active", state.filterHighRating);
-    renderExploreRestaurants();
-  });
+  $("filter-veg-btn").addEventListener("click", () => toggleFilter("filter-veg-btn", "filterVegOnly"));
+  $("filter-rating-btn").addEventListener("click", () => toggleFilter("filter-rating-btn", "filterHighRating"));
+  $("filter-fast-btn").addEventListener("click", () => toggleFilter("filter-fast-btn", "filterFastDelivery"));
 
-  el.filterFastBtn.addEventListener("click", () => {
-    state.filterFastDelivery = !state.filterFastDelivery;
-    el.filterFastBtn.classList.toggle("active", state.filterFastDelivery);
-    renderExploreRestaurants();
-  });
-
-  el.sortSelect.addEventListener("change", (e) => {
+  $("sort-select").addEventListener("change", (e) => {
     state.sortOption = e.target.value;
     renderExploreRestaurants();
   });
 
-  el.exploreCategoryChips.addEventListener("click", (e) => {
+  $("explore-category-chips").addEventListener("click", (e) => {
     const chip = e.target.closest("[data-cat-chip]");
     if (!chip) return;
     state.activeCategory = chip.dataset.catChip;
@@ -1049,7 +843,7 @@ function setupEventListeners() {
     renderExploreRestaurants();
   });
 
-  el.btnResetFilters.addEventListener("click", () => {
+  $("btn-reset-filters").addEventListener("click", () => {
     state.searchQuery = "";
     state.activeCategory = "all";
     state.filterVegOnly = false;
@@ -1057,17 +851,17 @@ function setupEventListeners() {
     state.filterFastDelivery = false;
     state.sortOption = "relevance";
 
-    el.exploreSearchInput.value = "";
-    el.filterVegBtn.classList.remove("active");
-    el.filterRatingBtn.classList.remove("active");
-    el.filterFastBtn.classList.remove("active");
-    el.sortSelect.value = "relevance";
+    $("explore-search-input").value = "";
+    $("filter-veg-btn").classList.remove("active");
+    $("filter-rating-btn").classList.remove("active");
+    $("filter-fast-btn").classList.remove("active");
+    $("sort-select").value = "relevance";
 
     renderExploreCategories();
     renderExploreRestaurants();
   });
 
-  // Click on Restaurant Card (Landing or Explore)
+  // Restaurant Card Clicks
   document.addEventListener("click", (e) => {
     const card = e.target.closest(".restaurant-card");
     if (card && card.dataset.restaurantId) {
@@ -1076,31 +870,31 @@ function setupEventListeners() {
   });
 
   // Restaurant Menu Controls
-  el.restBackBtn.addEventListener("click", () => {
+  $("rest-back-btn").addEventListener("click", () => {
     window.location.hash = "#explore";
   });
 
-  el.menuVegFilter.addEventListener("click", () => {
+  $("menu-veg-filter").addEventListener("click", () => {
     state.menuVegOnly = true;
-    el.menuVegFilter.classList.add("active");
-    el.menuAllFilter.classList.remove("active");
+    $("menu-veg-filter").classList.add("active");
+    $("menu-all-filter").classList.remove("active");
     renderRestaurantMenu();
   });
 
-  el.menuAllFilter.addEventListener("click", () => {
+  $("menu-all-filter").addEventListener("click", () => {
     state.menuVegOnly = false;
-    el.menuAllFilter.classList.add("active");
-    el.menuVegFilter.classList.remove("active");
+    $("menu-all-filter").classList.add("active");
+    $("menu-veg-filter").classList.remove("active");
     renderRestaurantMenu();
   });
 
-  el.menuSearchInput.addEventListener("input", (e) => {
+  $("menu-search-input").addEventListener("input", (e) => {
     state.menuSearchQuery = e.target.value;
     renderRestaurantMenu();
   });
 
   // Menu Add & Stepper clicks
-  el.menuItemsList.addEventListener("click", (e) => {
+  $("menu-items-list").addEventListener("click", (e) => {
     const addBtn = e.target.closest('[data-action="add-menu"]');
     const incBtn = e.target.closest('[data-action="increase-menu"]');
     const decBtn = e.target.closest('[data-action="decrease-menu"]');
@@ -1109,20 +903,17 @@ function setupEventListeners() {
     if (!restaurant) return;
 
     if (addBtn) {
-      const dishId = addBtn.dataset.itemId;
-      const dish = restaurant.menu.find(m => m.id === dishId);
+      const dish = restaurant.menu.find(m => m.id === addBtn.dataset.itemId);
       if (dish) handleAddToCartRequest(restaurant, dish);
     } else if (incBtn) {
-      const dishId = incBtn.dataset.itemId;
-      updateCartItemQty(dishId, 1);
+      updateCartItemQty(incBtn.dataset.itemId, 1);
     } else if (decBtn) {
-      const dishId = decBtn.dataset.itemId;
-      updateCartItemQty(dishId, -1);
+      updateCartItemQty(decBtn.dataset.itemId, -1);
     }
   });
 
   // Cart Drawer Item Actions
-  el.cartDrawerBody.addEventListener("click", (e) => {
+  $("cart-drawer-body").addEventListener("click", (e) => {
     const incBtn = e.target.closest('[data-cart-action="increase"]');
     const decBtn = e.target.closest('[data-cart-action="decrease"]');
     const clearBtn = e.target.closest("#btn-clear-cart-action");
@@ -1136,64 +927,55 @@ function setupEventListeners() {
       clearCart();
       showToast("Cart cleared.");
     } else if (browseBtn) {
-      closeCartDrawer();
+      toggleCartDrawer(false);
       window.location.hash = "#explore";
     }
   });
 
-  // Proceed to Checkout from Drawer
-  el.btnDrawerCheckout.addEventListener("click", () => {
+  // Proceed to Checkout
+  $("btn-drawer-checkout").addEventListener("click", () => {
     const cart = getCart();
     if (!cart.items || cart.items.length === 0) return;
 
-    closeCartDrawer();
-
-    const session = getSession();
-    if (!session) {
+    toggleCartDrawer(false);
+    if (!getSession()) {
       showToast("Please sign in to proceed with checkout.");
-      openAuthModal("login");
+      toggleAuthModal(true, "login");
       return;
     }
-
     window.location.hash = "#checkout";
   });
 
-  // Checkout View Actions
-  el.checkoutBackBtn.addEventListener("click", () => {
-    if (state.activeRestaurantId) {
-      window.location.hash = `#restaurant/${state.activeRestaurantId}`;
-    } else {
-      window.location.hash = "#explore";
-    }
+  // Checkout Actions
+  $("checkout-back-btn").addEventListener("click", () => {
+    window.location.hash = state.activeRestaurantId ? `#restaurant/${state.activeRestaurantId}` : "#explore";
   });
 
-  el.btnConfirmPlaceOrder.addEventListener("click", handlePlaceOrder);
+  $("btn-confirm-place-order").addEventListener("click", handlePlaceOrder);
 
-  // Orders View Actions (Reorder)
-  el.ordersListContainer.addEventListener("click", (e) => {
+  // Orders Reorder
+  $("orders-list-container").addEventListener("click", (e) => {
     const reorderBtn = e.target.closest("[data-reorder-id]");
-    if (reorderBtn) {
-      handleReorder(reorderBtn.dataset.reorderId);
-    }
+    if (reorderBtn) handleReorder(reorderBtn.dataset.reorderId);
   });
 
-  // Conflict Modal Actions
-  el.conflictBtnCancel.addEventListener("click", () => {
+  // Conflict Modal
+  $("conflict-btn-cancel").addEventListener("click", () => {
     state.pendingConflictItem = null;
-    el.conflictModalBackdrop.classList.remove("open");
+    $("conflict-modal-backdrop").classList.remove("open");
   });
 
-  el.conflictBtnConfirm.addEventListener("click", () => {
+  $("conflict-btn-confirm").addEventListener("click", () => {
     if (state.pendingConflictItem) {
       clearCart();
       const { restaurant, item } = state.pendingConflictItem;
       addToCart(restaurant, item);
       state.pendingConflictItem = null;
-      el.conflictModalBackdrop.classList.remove("open");
+      $("conflict-modal-backdrop").classList.remove("open");
       showToast(`Fresh cart started from ${restaurant.name}!`, "🥘");
     }
   });
 }
 
-// Kick off application
+// Start Application
 document.addEventListener("DOMContentLoaded", init);
