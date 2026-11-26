@@ -70,7 +70,13 @@ export async function getRestaurants(req, res) {
   }
 
   if (vegOnly === "true") {
-    list = list.filter((r) => r.menu.some((m) => m.isVeg));
+    list = list.filter((r) =>
+      category && category !== "all"
+        ? r.menu.some((m) => m.isVeg && m.category === category) ||
+          (r.menu.every((m) => m.isVeg) &&
+            r.cuisine.some((c) => c.toLowerCase().replace(/\s+/g, "-") === category))
+        : r.menu.some((m) => m.isVeg)
+    );
   }
 
   if (minRating) {

@@ -4,13 +4,10 @@ import {
   ArrowRight,
   Clock,
   Search,
-  ShieldCheck,
   Sparkles,
   Star,
   Truck,
-  Users,
-  UtensilsCrossed,
-  Zap
+  UtensilsCrossed
 } from "lucide-react";
 import { restaurantApi } from "../api/restaurantApi";
 import { CATEGORIES } from "../utils/constants";
@@ -58,7 +55,7 @@ export function LandingPage() {
   return (
     <div>
       {/* Editorial Hero Section */}
-      <section className="border-b border-[#EAE3D9] bg-[#FAF7F2] py-12 md:py-20">
+      <section className="border-b border-[#EAE3D9] bg-[#FAF7F2]/75 py-12 md:py-20">
         <div className="mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
           <div>
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#EAE3D9] bg-white px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] text-[#C83E2B] uppercase">
@@ -279,50 +276,6 @@ export function LandingPage() {
               ))}
             </div>
           )}
-        </div>
-
-        {/* Editorial Value Pillars */}
-        <div className="mt-20 border-t border-[#EAE3D9] pt-14">
-          <div className="mb-10 text-center">
-            <span className="mb-2 block text-[11px] font-bold tracking-[0.16em] text-[#C83E2B] uppercase">
-              The EatUp Standard
-            </span>
-            <h2 className="font-editorial text-3xl sm:text-4xl text-[#1C1917]">
-              Built for <span className="italic">effortless</span> dining
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <div className="rounded-2xl border border-[#EAE3D9] bg-white p-7 transition hover:-translate-y-0.5">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#FBECE9] text-[#C83E2B]">
-                <Zap className="h-5 w-5" />
-              </div>
-              <h3 className="font-editorial mb-2 text-2xl text-[#1C1917]">Lightning Dispatch</h3>
-              <p className="text-sm leading-relaxed text-[#57534E]">
-                Kitchens begin firing your order immediately, arriving hot and tamper-sealed in 25–30 minutes.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-[#EAE3D9] bg-white p-7 transition hover:-translate-y-0.5">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#EAF2EC] text-[#2D5A3C]">
-                <Users className="h-5 w-5" />
-              </div>
-              <h3 className="font-editorial mb-2 text-2xl text-[#1C1917]">Live Group Tables</h3>
-              <p className="text-sm leading-relaxed text-[#57534E]">
-                Share a room code across devices. Everyone adds their own dishes while fees &amp; GST split automatically.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-[#EAE3D9] bg-white p-7 transition hover:-translate-y-0.5">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#FDF6E7] text-[#D99B26]">
-                <ShieldCheck className="h-5 w-5" />
-              </div>
-              <h3 className="font-editorial mb-2 text-2xl text-[#1C1917]">Hygiene Verified</h3>
-              <p className="text-sm leading-relaxed text-[#57534E]">
-                Every partner kitchen is vetted for culinary craft, fresh ingredients, and certified packaging hygiene.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </div>

@@ -22,7 +22,7 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 
 function AppShell() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="bg-food-doodles flex min-h-screen flex-col">
       <Header />
       <GroupOrderBanner />
 

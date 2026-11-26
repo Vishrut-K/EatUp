@@ -370,6 +370,195 @@ export const SEED_RESTAURANTS = [
         bestseller: false
       }
     ]
+  },
+  {
+    legacyId: "rest-7",
+    name: "Dilli 6 Tandoor & Dhaba",
+    cuisine: ["North Indian", "Biryani", "Beverages"],
+    rating: 4.7,
+    ratingCount: "3.9k+",
+    deliveryTime: "20-25 mins",
+    deliveryTimeMinutes: 24,
+    priceForTwo: "₹450 for two",
+    costNumeric: 450,
+    featured: true,
+    discountBadge: "20% OFF on Thalis & Combos",
+    image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&auto=format&fit=crop&q=80",
+    address: "Chandni Chowk, Old Delhi",
+    menu: [
+      {
+        dishId: "d6-701",
+        name: "Old Delhi Butter Chicken",
+        category: "north-indian",
+        isVeg: false,
+        price: 340,
+        rating: 4.9,
+        description: "Charcoal-roasted tandoori chicken simmered in velvety tomato-fenugreek makhani gravy.",
+        image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&auto=format&fit=crop&q=80",
+        bestseller: true
+      },
+      {
+        dishId: "d6-702",
+        name: "Slow-Simmered Dal Makhani",
+        category: "north-indian",
+        isVeg: true,
+        price: 240,
+        rating: 4.8,
+        description: "24-hour slow-cooked black lentils finished with white butter, cream, and roasted cumin.",
+        image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop&q=80",
+        bestseller: true
+      },
+      {
+        dishId: "d6-703",
+        name: "Kesar Mango Lassi",
+        category: "beverages",
+        isVeg: true,
+        price: 110,
+        rating: 4.7,
+        description: "Thick churned curd blended with Alphonso mango pulp, saffron strands, and crushed pistachios.",
+        image: "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=600&auto=format&fit=crop&q=80",
+        bestseller: false
+      }
+    ]
+  },
+  {
+    legacyId: "rest-8",
+    name: "Bombay Patty & Grill",
+    cuisine: ["Burgers", "American", "Beverages"],
+    rating: 4.6,
+    ratingCount: "1.5k+",
+    deliveryTime: "18-22 mins",
+    deliveryTimeMinutes: 20,
+    priceForTwo: "₹380 for two",
+    costNumeric: 380,
+    featured: false,
+    discountBadge: "FREE Fries on orders > ₹349",
+    image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=800&auto=format&fit=crop&q=80",
+    address: "Select Citywalk, Saket, New Delhi",
+    menu: [
+      {
+        dishId: "bp-801",
+        name: "Double Smash Classic Cheeseburger",
+        category: "burgers",
+        isVeg: false,
+        price: 295,
+        rating: 4.8,
+        description: "Two lacy-edged smashed patties, double aged cheddar, house pickles, and caramelized onion jam.",
+        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80",
+        bestseller: true
+      },
+      {
+        dishId: "bp-802",
+        name: "Truffle Mushroom & Swiss Veggie Burger",
+        category: "burgers",
+        isVeg: true,
+        price: 250,
+        rating: 4.6,
+        description: "Crispy herb-mushroom patty, melted Swiss cheese, baby arugula, and garlic-truffle aioli.",
+        image: "https://images.unsplash.com/photo-1520072959219-c595dc870360?w=600&auto=format&fit=crop&q=80",
+        bestseller: true
+      },
+      {
+        dishId: "bp-803",
+        name: "Salted Caramel Cold Brew",
+        category: "beverages",
+        isVeg: true,
+        price: 145,
+        rating: 4.5,
+        description: "18-hour steeped Arabica cold brew topped with sea-salted caramel cream foam.",
+        image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&auto=format&fit=crop&q=80",
+        bestseller: false
+      }
+    ]
+  },
+  {
+    legacyId: "rest-9",
+    name: "La Crust & Crumble Bakery",
+    cuisine: ["Desserts", "Beverages", "Pizza"],
+    rating: 4.8,
+    ratingCount: "2.1k+",
+    deliveryTime: "20-25 mins",
+    deliveryTimeMinutes: 22,
+    priceForTwo: "₹350 for two",
+    costNumeric: 350,
+    featured: false,
+    discountBadge: "Buy 2 Pastries, Get 15% OFF",
+    image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800&auto=format&fit=crop&q=80",
+    address: "Defence Colony Market, New Delhi",
+    menu: [
+      {
+        dishId: "lc-901",
+        name: "Belgian Dark Chocolate Hazelnut Tart",
+        category: "desserts",
+        isVeg: true,
+        price: 210,
+        rating: 4.9,
+        description: "Crisp cocoa shortcrust filled with 70% dark chocolate ganache and roasted Piedmont hazelnuts.",
+        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=80",
+        bestseller: true
+      },
+      {
+        dishId: "lc-902",
+        name: "Burnt Basque Cheesecake Slice",
+        category: "desserts",
+        isVeg: true,
+        price: 240,
+        rating: 4.8,
+        description: "Caramelized top with an ultra-creamy vanilla bean cheesecake center.",
+        image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600&auto=format&fit=crop&q=80",
+        bestseller: true
+      },
+      {
+        dishId: "lc-903",
+        name: "Artisanal Iced Matcha Latte",
+        category: "beverages",
+        isVeg: true,
+        price: 180,
+        rating: 4.6,
+        description: "Ceremonial-grade Uji matcha whisked over oat milk and ice.",
+        image: "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=600&auto=format&fit=crop&q=80",
+        bestseller: false
+      }
+    ]
+  },
+  {
+    legacyId: "rest-10",
+    name: "Saffron Bowl & Chaat",
+    cuisine: ["Healthy Bowls", "North Indian", "South Indian"],
+    rating: 4.5,
+    ratingCount: "980+",
+    deliveryTime: "15-20 mins",
+    deliveryTimeMinutes: 18,
+    priceForTwo: "₹300 for two",
+    costNumeric: 300,
+    featured: false,
+    discountBadge: "FLAT ₹50 OFF on Bowls",
+    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80",
+    address: "Noida Sector 18",
+    menu: [
+      {
+        dishId: "sb-1001",
+        name: "Roasted Sweet Potato & Chickpea Buddha Bowl",
+        category: "healthy",
+        isVeg: true,
+        price: 250,
+        rating: 4.7,
+        description: "Spiced chickpeas, roasted sweet potato, baby spinach, brown rice, and creamy tahini-mint drizzle.",
+        image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop&q=80",
+        bestseller: true
+      },
+      {
+        dishId: "sb-1002",
+        name: "Millet & Lentil Khichdi Comfort Bowl",
+        category: "healthy",
+        isVeg: true,
+        price: 190,
+        rating: 4.6,
+        description: "Wholesome foxtail millet and moong dal tempered with desi ghee, cumin, and roasted papad.",
+        image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop&q=80",
+        bestseller: false
+      }
+    ]
   }
 ];
 

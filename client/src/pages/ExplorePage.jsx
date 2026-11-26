@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Search, SlidersHorizontal, Star, Zap } from "lucide-react";
+import { ChevronDown, Search, SlidersHorizontal, Star, Zap } from "lucide-react";
 import { restaurantApi } from "../api/restaurantApi";
 import { CATEGORIES } from "../utils/constants";
 import { DietBadge } from "../components/common/DietBadge";
@@ -10,6 +10,7 @@ import { RestaurantCard } from "../components/restaurant/RestaurantCard";
 export function ExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
+  const [debouncedQuery, setDebouncedQuery] = useState(searchParams.get("q") || "");
   const [activeCategory, setActiveCategory] = useState(searchParams.get("category") || "all");
   const [vegOnly, setVegOnly] = useState(false);
   const [highRating, setHighRating] = useState(false);
@@ -17,19 +18,29 @@ export function ExplorePage() {
   const [sortOption, setSortOption] = useState("relevance");
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState("");
 
   useEffect(() => {
     const qParam = searchParams.get("q") || "";
     const catParam = searchParams.get("category") || "all";
     setSearchQuery(qParam);
+    setDebouncedQuery(qParam);
     setActiveCategory(catParam);
   }, [searchParams]);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  useEffect(() => {
     let active = true;
     setLoading(true);
+    setFetchError("");
     const params = {};
-    if (searchQuery.trim()) params.q = searchQuery.trim();
+    if (debouncedQuery.trim()) params.q = debouncedQuery.trim();
     if (activeCategory && activeCategory !== "all") params.category = activeCategory;
     if (vegOnly) params.vegOnly = "true";
     if (highRating) params.minRating = "4.5";
@@ -41,8 +52,14 @@ export function ExplorePage() {
       .then((res) => {
         if (active) setRestaurants(res.restaurants || []);
       })
-      .catch(() => {
-        if (active) setRestaurants([]);
+      .catch((err) => {
+        if (active) {
+          setRestaurants([]);
+          setFetchError(
+            err?.response?.data?.message ||
+              "Could not reach the EatUp kitchen server. Please make sure the backend is running."
+          );
+        }
       })
       .finally(() => {
         if (active) setLoading(false);
@@ -51,7 +68,7 @@ export function ExplorePage() {
     return () => {
       active = false;
     };
-  }, [searchQuery, activeCategory, vegOnly, highRating, fastDelivery, sortOption]);
+  }, [debouncedQuery, activeCategory, vegOnly, highRating, fastDelivery, sortOption]);
 
   const handleCategoryChange = (catId) => {
     setActiveCategory(catId);
@@ -137,18 +154,19 @@ export function ExplorePage() {
               </button>
 
               <div className="relative flex items-center">
-                <SlidersHorizontal className="pointer-events-none absolute left-3 h-3.5 w-3.5 text-[#57534E]" />
+                <SlidersHorizontal className="pointer-events-none absolute left-3.5 h-3.5 w-3.5 text-[#57534E]" />
                 <select
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value)}
                   aria-label="Sort restaurants"
-                  className="cursor-pointer rounded-full border border-[#EAE3D9] bg-white py-2 pr-4 pl-8 text-xs font-bold text-[#1C1917] outline-none transition hover:border-[#1C1917]"
+                  className="cursor-pointer appearance-none rounded-full border border-[#EAE3D9] bg-white py-2 pr-9 pl-9 text-xs font-bold text-[#1C1917] outline-none transition hover:border-[#1C1917]"
                 >
                   <option value="relevance">Sort: Relevance</option>
                   <option value="rating">Rating: High to Low</option>
                   <option value="deliveryTime">Delivery: Fastest</option>
                   <option value="costAsc">Price: Low to High</option>
                 </select>
+                <ChevronDown className="pointer-events-none absolute right-3 h-3.5 w-3.5 text-[#57534E]" />
               </div>
             </div>
           </div>
@@ -197,6 +215,20 @@ export function ExplorePage() {
               />
             ))}
           </div>
+        ) : fetchError ? (
+          <EmptyState
+            title="Kitchens unavailable"
+            subtitle={fetchError}
+            action={
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="inline-flex items-center gap-2 rounded-full bg-[#C83E2B] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#A62F1F]"
+              >
+                Retry
+              </button>
+            }
+          />
         ) : restaurants.length === 0 ? (
           <EmptyState
             title="No matching kitchens found"

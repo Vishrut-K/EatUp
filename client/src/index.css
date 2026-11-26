@@ -102,3 +102,10 @@
 .categories-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* Seamless culinary doodle backdrop */
+.bg-food-doodles {
+  background-color: #FAF7F2;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220' fill='none' stroke='%231C1917' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round' stroke-opacity='0.055'%3E%3C!-- Pizza slice --%3E%3Cpath d='M28 24 L54 34 L34 56 Z'/%3E%3Ccircle cx='39' cy='38' r='2.2'/%3E%3Ccircle cx='44' cy='33' r='1.8'/%3E%3C!-- Coffee cup --%3E%3Cpath d='M138 28 H162 V44 C162 50 157 54 150 54 C143 54 138 50 138 44 Z'/%3E%3Cpath d='M162 32 H167 C169 32 170 34 170 36 C170 39 168 41 165 41 H162'/%3E%3Cpath d='M145 20 C145 17 148 17 148 14 M153 20 C153 17 156 17 156 14'/%3E%3C!-- Croissant --%3E%3Cpath d='M78 96 C88 86 106 86 116 96 C112 104 104 108 97 108 C90 108 82 104 78 96 Z'/%3E%3Cpath d='M90 90 L93 107 M104 90 L101 107'/%3E%3C!-- Chili pepper --%3E%3Cpath d='M180 92 C190 96 196 112 188 124 C184 114 178 106 172 100 C172 95 175 92 180 92 Z'/%3E%3Cpath d='M176 92 C176 87 179 84 182 83'/%3E%3C!-- Fork & Spoon --%3E%3Cpath d='M32 140 V168 M27 140 V150 C27 153 37 153 37 150 V140'/%3E%3Cpath d='M48 140 C52 140 54 144 54 148 C54 152 52 155 48 155 C44 155 42 152 42 148 C42 144 44 140 48 140 Z M48 155 V168'/%3E%3C!-- Ramen bowl --%3E%3Cpath d='M124 158 H164 C164 172 155 180 144 180 C133 180 124 172 124 158 Z'/%3E%3Cpath d='M132 158 L156 144 M140 158 L162 148'/%3E%3Cpath d='M136 180 H152'/%3E%3C!-- Basil leaf --%3E%3Cpath d='M86 178 C96 168 110 170 112 182 C102 192 88 190 86 178 Z M86 178 L108 182'/%3E%3C!-- Lemon slice --%3E%3Ccircle cx='188' cy='188' r='12'/%3E%3Cpath d='M188 176 V200 M176 188 H200 M180 180 L196 196 M196 180 L180 196'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
