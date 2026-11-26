@@ -26,12 +26,12 @@ const userSchema = new mongoose.Schema(
     defaultPhone: {
       type: String,
       trim: true,
-      default: "9876543210"
+      default: ""
     },
     defaultAddress: {
       type: String,
       trim: true,
-      default: "Flat 402, Sunshine Residency, Barakhamba Road, Connaught Place, New Delhi"
+      default: ""
     }
   },
   { timestamps: true }

@@ -18,6 +18,7 @@ import { GroupOrderRoomPage } from "./pages/GroupOrderRoomPage";
 import { CheckoutPage } from "./pages/CheckoutPage";
 import { OrderConfirmationPage } from "./pages/OrderConfirmationPage";
 import { OrdersHistoryPage } from "./pages/OrdersHistoryPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 function AppShell() {
   return (
@@ -34,7 +35,7 @@ function AppShell() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/confirmation/:orderNumber" element={<OrderConfirmationPage />} />
           <Route path="/orders" element={<OrdersHistoryPage />} />
-          <Route path="*" element={<LandingPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
 

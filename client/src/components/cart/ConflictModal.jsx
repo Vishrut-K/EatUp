@@ -1,3 +1,4 @@
+import { UtensilsCrossed } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 import { useGroupOrder } from "../../context/GroupOrderContext";
 
@@ -15,29 +16,31 @@ export function ConflictModal() {
   const handleConfirm = isGroup ? resolveGroupConflictReplace : resolveConflictReplace;
 
   return (
-    <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-slate-900/65 p-5 backdrop-blur-xs">
-      <div className="w-full max-w-[440px] rounded-[18px] bg-white p-7 text-center shadow-2xl">
-        <div className="mb-3 text-5xl">🍲</div>
-        <h3 className="mb-2 text-2xl font-extrabold text-[#111827]">
-          {isGroup ? "Group order restaurant mismatch" : "Replace cart items?"}
+    <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-[#1C1917]/65 p-4 backdrop-blur-xs">
+      <div className="w-full max-w-[440px] rounded-3xl border border-[#EAE3D9] bg-[#FAF7F2] p-7 text-center shadow-2xl">
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#FBECE9] text-[#C83E2B]">
+          <UtensilsCrossed className="h-5 w-5" />
+        </div>
+        <h3 className="font-editorial mb-2 text-3xl text-[#1C1917]">
+          {isGroup ? "Switch group kitchen?" : "Start a fresh tray?"}
         </h3>
-        <p className="text-sm leading-relaxed text-[#4B5563]">
+        <p className="text-sm leading-relaxed text-[#57534E]">
           {isGroup ? (
             <>
-              Your group room currently has items from <strong>{active.existingRestaurant}</strong>.
+              Your group table currently has dishes from <strong className="text-[#1C1917]">{active.existingRestaurant}</strong>.
               <br />
               <br />
               {canReplace
-                ? `As the room host, would you like to clear the group cart and start fresh from ${active.newRestaurant}?`
-                : `Only the room host can switch restaurants from ${active.existingRestaurant} to ${active.newRestaurant}.`}
+                ? `As the table host, would you like to clear the group tray and switch to ${active.newRestaurant}?`
+                : `Only the table host can switch kitchens from ${active.existingRestaurant} to ${active.newRestaurant}.`}
             </>
           ) : (
             <>
-              Your cart contains delicious food from <strong>{active.existingRestaurant}</strong>.
+              Your tray currently holds dishes from <strong className="text-[#1C1917]">{active.existingRestaurant}</strong>.
               <br />
               <br />
-              Would you like to discard those and start a fresh order from{" "}
-              <strong>{active.newRestaurant}</strong>?
+              Would you like to clear those and start fresh from{" "}
+              <strong className="text-[#1C1917]">{active.newRestaurant}</strong>?
             </>
           )}
         </p>
@@ -46,17 +49,17 @@ export function ConflictModal() {
           <button
             type="button"
             onClick={handleCancel}
-            className="flex-1 rounded-full border border-[#E5EBE7] bg-white px-5 py-2.5 text-sm font-bold text-[#111827] transition hover:bg-[#F7FAF8]"
+            className="flex-1 rounded-full border border-[#EAE3D9] bg-white px-5 py-2.5 text-sm font-bold text-[#1C1917] transition hover:border-[#1C1917]"
           >
-            {canReplace ? "Cancel" : "Got It"}
+            {canReplace ? "Keep Current" : "Got It"}
           </button>
           {canReplace && (
             <button
               type="button"
               onClick={handleConfirm}
-              className="flex-1 rounded-full bg-gradient-to-br from-[#0D7A53] to-[#149666] px-5 py-2.5 text-sm font-bold text-white transition hover:opacity-95"
+              className="flex-1 rounded-full bg-[#C83E2B] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#A62F1F]"
             >
-              Start Fresh Cart
+              Start Fresh
             </button>
           )}
         </div>

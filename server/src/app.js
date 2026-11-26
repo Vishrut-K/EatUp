@@ -13,7 +13,17 @@ import { errorHandler, notFoundHandler } from "./middleware/errorMiddleware.js";
 export function createApp() {
   const app = express();
 
-  app.use(helmet({ contentSecurityPolicy: false }));
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          connectSrc: ["'self'", ...env.clientOrigins],
+          imgSrc: ["'self'", "data:", "https://images.unsplash.com"]
+        }
+      }
+    })
+  );
   app.use(
     cors({
       origin: env.clientOrigins,

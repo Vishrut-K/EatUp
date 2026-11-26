@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { Check } from "lucide-react";
 import { orderApi } from "../api/orderApi";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
@@ -40,28 +41,28 @@ export function OrderConfirmationPage() {
       setOrder(res.order);
       showToast(`${share.userName}'s share marked as ${nextStatus}.`);
     } catch (err) {
-      showToast(err?.response?.data?.message || "Could not update payment status.", "⚠️");
+      showToast(err?.response?.data?.message || "Could not update payment status.");
     }
   };
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-[620px] px-5 py-16">
-        <div className="h-96 animate-pulse rounded-3xl border border-[#E5EBE7] bg-white" />
+      <div className="mx-auto max-w-[640px] px-4 sm:px-6 py-16">
+        <div className="h-96 animate-pulse rounded-3xl border border-[#EAE3D9] bg-white" />
       </div>
     );
   }
 
   if (!order) {
     return (
-      <div className="mx-auto max-w-[620px] px-5 py-16 text-center">
-        <h2 className="mb-2 text-2xl font-extrabold text-[#111827]">Order Receipt Not Found</h2>
-        <p className="mb-6 text-sm text-[#4B5563]">
+      <div className="mx-auto max-w-[640px] px-4 sm:px-6 py-16 text-center">
+        <h2 className="font-editorial mb-2 text-3xl text-[#1C1917]">Order Receipt Not Found</h2>
+        <p className="mb-6 text-sm text-[#57534E]">
           Sign in with the account that placed or participated in this order to view its receipt.
         </p>
         <Link
           to="/orders"
-          className="inline-block rounded-full bg-[#0D7A53] px-6 py-2.5 text-sm font-bold text-white"
+          className="inline-block rounded-full bg-[#C83E2B] px-6 py-2.5 text-sm font-bold text-white"
         >
           Go to My Orders
         </Link>
@@ -73,65 +74,76 @@ export function OrderConfirmationPage() {
   const isCreator = user && order.placedByUserId === user.id;
 
   return (
-    <div className="px-5 py-14">
-      <div className="mx-auto max-w-[640px] rounded-3xl border border-[#E5EBE7] bg-white p-8 sm:p-10 text-center shadow-xl">
-        <div className="animate-pulse-success mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#DCFCE7] text-4xl text-[#16A34A]">
-          ✓
+    <div className="px-4 sm:px-6 py-12 pb-24 sm:pb-16">
+      <div className="mx-auto max-w-[660px] rounded-3xl border border-[#EAE3D9] bg-white p-7 sm:p-10 text-center shadow-xl">
+        <div className="animate-pulse-success mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#EAF2EC] text-[#2D5A3C]">
+          <Check className="h-8 w-8 stroke-[2.5]" />
         </div>
 
-        <h1 className="mb-2 text-3xl font-extrabold text-[#111827]">
-          {isGroup ? "Group Order Placed Successfully!" : "Order Placed Successfully!"}
+        <span className="mb-2 inline-block text-[10px] font-bold tracking-[0.16em] text-[#2D5A3C] uppercase">
+          Kitchen Confirmed
+        </span>
+        <h1 className="font-editorial mb-2 text-4xl sm:text-5xl text-[#1C1917]">
+          {isGroup ? "Group Order Placed!" : "Order Placed!"}
         </h1>
-        <p className="mb-6 text-base text-[#4B5563]">
-          Thank you for ordering with EatUp! Your meal from{" "}
-          <strong>{order.restaurantName}</strong> is being prepared fresh.
+        <p className="mb-7 text-sm sm:text-base text-[#57534E]">
+          Thank you for dining with EatUp. Your meal from{" "}
+          <strong className="text-[#1C1917]">{order.restaurantName}</strong> is being prepared fresh.
         </p>
 
-        <div className="mb-7 rounded-xl border border-dashed border-[#E5EBE7] bg-[#F7FAF8] p-5 text-left">
-          <div className="mb-3 flex justify-between border-b border-[#E5EBE7] pb-2.5">
+        <div className="mb-7 rounded-2xl border border-dashed border-[#EAE3D9] bg-[#FAF7F2] p-5 text-left">
+          <div className="mb-4 flex justify-between border-b border-[#EAE3D9] pb-3">
             <div>
-              <div className="text-xs font-bold text-[#8E9BAE]">ORDER ID</div>
-              <div className="text-lg font-extrabold text-[#0D7A53]">{order.orderNumber}</div>
+              <div className="text-[10px] font-bold tracking-wider text-[#A8A29E] uppercase">
+                Order ID
+              </div>
+              <div className="font-code text-base sm:text-lg font-bold text-[#C83E2B]">
+                {order.orderNumber}
+              </div>
             </div>
             <div className="text-right">
-              <div className="text-xs font-bold text-[#8E9BAE]">ESTIMATED ARRIVAL</div>
-              <div className="text-lg font-extrabold text-[#0D7A53]">30-35 mins</div>
+              <div className="text-[10px] font-bold tracking-wider text-[#A8A29E] uppercase">
+                Estimated Arrival
+              </div>
+              <div className="text-base sm:text-lg font-extrabold text-[#2D5A3C]">30–35 mins</div>
             </div>
           </div>
 
-          <div className="mb-2 text-sm text-[#4B5563]">
-            <strong>Delivering to:</strong> {order.deliveryAddress}
+          <div className="mb-1.5 text-xs sm:text-sm text-[#57534E]">
+            <strong className="text-[#1C1917]">Delivering to:</strong> {order.deliveryAddress}
           </div>
-          <div className="mb-3.5 text-sm text-[#4B5563]">
-            <strong>Payment Method:</strong> {order.paymentMethod}
+          <div className="mb-4 text-xs sm:text-sm text-[#57534E]">
+            <strong className="text-[#1C1917]">Payment:</strong> {order.paymentMethod}
           </div>
 
-          <div className="border-t border-dashed border-[#E5EBE7] pt-3">
-            <div className="mb-2 text-sm font-bold text-[#111827]">Items Ordered:</div>
+          <div className="border-t border-dashed border-[#EAE3D9] pt-3.5">
+            <div className="mb-2.5 text-xs font-bold tracking-wider text-[#A8A29E] uppercase">
+              Items Ordered
+            </div>
             {order.items.map((i, idx) => (
               <div
                 key={`${i.dishId}-${idx}`}
-                className="mb-1 flex justify-between text-[0.85rem] text-[#111827]"
+                className="mb-1.5 flex justify-between text-xs sm:text-sm text-[#1C1917]"
               >
                 <span>
-                  {i.qty} × {i.name}
+                  <span className="font-code font-bold">{i.qty}×</span> {i.name}
                   {isGroup && (
-                    <span className="ml-1.5 text-xs text-[#8E9BAE]">({i.ownerName})</span>
+                    <span className="ml-1.5 text-xs text-[#A8A29E]">({i.ownerName})</span>
                   )}
                 </span>
-                <span className="font-bold">₹{i.price * i.qty}</span>
+                <span className="font-code font-bold tabular-nums">₹{i.price * i.qty}</span>
               </div>
             ))}
 
-            <div className="mt-2.5 flex justify-between border-t border-[#E5EBE7] pt-2.5 text-base font-extrabold text-[#111827]">
-              <span>Combined Total</span>
-              <span>₹{order.totals.grandTotal}</span>
+            <div className="mt-3 flex justify-between border-t border-[#EAE3D9] pt-3 text-base font-extrabold text-[#1C1917]">
+              <span>Total Paid</span>
+              <span className="font-code tabular-nums">₹{order.totals.grandTotal}</span>
             </div>
           </div>
 
           {isGroup && order.participantShares?.length > 0 && (
-            <div className="mt-4 border-t border-dashed border-[#E5EBE7] pt-3">
-              <div className="mb-2 text-xs font-extrabold uppercase text-[#0D7A53]">
+            <div className="mt-4 border-t border-dashed border-[#EAE3D9] pt-3.5">
+              <div className="mb-2.5 text-[10px] font-bold tracking-[0.14em] text-[#2D5A3C] uppercase">
                 Individual Payment Responsibilities (Room {order.roomCode})
               </div>
               <div className="space-y-2">
@@ -141,25 +153,25 @@ export function OrderConfirmationPage() {
                   return (
                     <div
                       key={s.userId}
-                      className="flex items-center justify-between rounded-lg border border-[#E5EBE7] bg-white px-3 py-2 text-xs"
+                      className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#EAE3D9] bg-white px-3.5 py-2.5 text-xs"
                     >
                       <div>
-                        <span className="font-bold text-[#111827]">{s.userName}</span>
-                        <span className="ml-2 text-[#8E9BAE]">
+                        <span className="font-bold text-[#1C1917]">{s.userName}</span>
+                        <span className="ml-2 text-[#A8A29E]">
                           (Items ₹{s.itemsSubtotal} + Fees/GST ₹
                           {s.deliveryShare + s.platformShare + s.gstShare})
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="font-extrabold text-[#111827]">₹{s.totalOwed}</span>
+                        <span className="font-code font-bold text-[#1C1917]">₹{s.totalOwed}</span>
                         <button
                           type="button"
                           disabled={!canToggle}
                           onClick={() => toggleShareSettled(s)}
-                          className={`rounded-full px-2.5 py-0.5 font-extrabold transition ${
+                          className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold transition ${
                             settled
-                              ? "bg-[#DCFCE7] text-[#15803D]"
-                              : "bg-[#FEF3C7] text-[#92400E]"
+                              ? "bg-[#EAF2EC] text-[#2D5A3C]"
+                              : "bg-[#FDF6E7] text-[#B47B14]"
                           }`}
                         >
                           {settled ? "Settled" : "Unpaid"}
@@ -173,18 +185,18 @@ export function OrderConfirmationPage() {
           )}
         </div>
 
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-3">
           <Link
             to="/orders"
-            className="rounded-full bg-gradient-to-br from-[#0D7A53] to-[#149666] px-6 py-2.5 text-sm font-bold text-white transition hover:opacity-95"
+            className="rounded-full bg-[#C83E2B] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#A62F1F]"
           >
             View in My Orders
           </Link>
           <Link
             to="/explore"
-            className="rounded-full border border-[#E5EBE7] bg-white px-6 py-2.5 text-sm font-bold text-[#111827] transition hover:bg-[#F7FAF8]"
+            className="rounded-full border border-[#EAE3D9] bg-white px-6 py-3 text-sm font-bold text-[#1C1917] transition hover:border-[#1C1917]"
           >
-            Order Something Else
+            Explore More Kitchens
           </Link>
         </div>
       </div>

@@ -1,10 +1,25 @@
+import { randomInt } from "crypto";
 import { Cart } from "../models/Cart.js";
 import { Order } from "../models/Order.js";
 import { Restaurant } from "../models/Restaurant.js";
 import { calculateCartTotals } from "../services/billingService.js";
 
+const PHONE_REGEX = /^\d{10}$/;
+
 export function generateOrderNumber() {
-  return "EAT-" + Math.floor(100000 + Math.random() * 900000);
+  return "EAT-" + randomInt(100000, 1000000);
+}
+
+export async function generateUniqueOrderNumber(maxAttempts = 10) {
+  for (let i = 0; i < maxAttempts; i += 1) {
+    const candidate = generateOrderNumber();
+    if (!(await Order.exists({ orderNumber: candidate }))) {
+      return candidate;
+    }
+  }
+  const err = new Error("Unable to generate a unique order number. Please try again.");
+  err.statusCode = 503;
+  throw err;
 }
 
 export async function createSoloOrder(req, res) {
@@ -15,6 +30,9 @@ export async function createSoloOrder(req, res) {
 
   if (!cleanName || !cleanPhone || !cleanAddress) {
     return res.status(400).json({ success: false, message: "Please fill in all delivery details." });
+  }
+  if (!PHONE_REGEX.test(cleanPhone)) {
+    return res.status(400).json({ success: false, message: "Please enter a valid 10-digit phone number." });
   }
 
   const cart = await Cart.findOne({ userId: req.user._id });
@@ -49,11 +67,7 @@ export async function createSoloOrder(req, res) {
   }
 
   const totals = calculateCartTotals(verifiedItems);
-
-  let orderNumber = generateOrderNumber();
-  while (await Order.exists({ orderNumber })) {
-    orderNumber = generateOrderNumber();
-  }
+  const orderNumber = await generateUniqueOrderNumber();
 
   const order = await Order.create({
     orderNumber,

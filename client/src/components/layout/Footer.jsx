@@ -1,54 +1,65 @@
 import { Link } from "react-router-dom";
+import { Flame } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-[#1E293B] bg-[#0F172A] pt-12 pb-8 text-[#94A3B8]">
-      <div className="mx-auto max-w-[1240px] px-5">
-        <div className="mb-10 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] lg:gap-10">
+    <footer className="mt-auto border-t border-[#292524] bg-[#1C1917] pt-14 pb-24 sm:pb-10 text-[#A8A29E]">
+      <div className="mx-auto max-w-[1280px] px-5 sm:px-6">
+        <div className="mb-12 grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
           <div>
-            <Link to="/" className="mb-3 inline-flex items-center gap-2 text-2xl font-extrabold text-white">
-              <span>🍔</span>
-              <span>EatUp</span>
+            <Link to="/" className="mb-4 inline-flex items-center gap-2.5">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#C83E2B] text-white">
+                <Flame className="h-4 w-4 fill-current" />
+              </span>
+              <span className="font-editorial text-2xl text-[#FAF7F2]">
+                Eat<span className="italic text-[#D99B26]">Up.</span>
+              </span>
             </Link>
-            <p className="max-w-[320px] text-sm leading-relaxed">
-              Discover and order from Delhi NCR&apos;s top dining spots, authentic tandoors, artisanal pizzerias, and health kitchens. Delivered piping hot to your table.
+            <p className="max-w-[340px] text-sm leading-relaxed text-[#A8A29E]">
+              Curated local kitchens, woodfire ovens, and slow-cooked biryanis — built for solo cravings and real-time shared group tables across Delhi NCR.
             </p>
           </div>
 
           <div>
-            <h4 className="mb-4 text-base font-bold text-white">Explore</h4>
+            <h4 className="mb-4 text-[11px] font-bold tracking-[0.16em] text-[#FAF7F2] uppercase">
+              Explore
+            </h4>
             <ul className="flex flex-col gap-2.5 text-sm">
-              <li><Link to="/explore" className="hover:text-white">All Restaurants</Link></li>
-              <li><Link to="/explore?category=biryani" className="hover:text-white">Biryani Specials</Link></li>
-              <li><Link to="/explore?category=pizza" className="hover:text-white">Artisanal Pizzas</Link></li>
-              <li><Link to="/explore?category=healthy" className="hover:text-white">Healthy Bowls</Link></li>
+              <li><Link to="/explore" className="transition hover:text-[#FAF7F2]">All Kitchens</Link></li>
+              <li><Link to="/explore?category=biryani" className="transition hover:text-[#FAF7F2]">Slow Dum Biryani</Link></li>
+              <li><Link to="/explore?category=pizza" className="transition hover:text-[#FAF7F2]">Woodfire Pizza</Link></li>
+              <li><Link to="/explore?category=healthy" className="transition hover:text-[#FAF7F2]">Healthy Bowls</Link></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="mb-4 text-base font-bold text-white">Quick Links</h4>
+            <h4 className="mb-4 text-[11px] font-bold tracking-[0.16em] text-[#FAF7F2] uppercase">
+              Experience
+            </h4>
             <ul className="flex flex-col gap-2.5 text-sm">
-              <li><Link to="/" className="hover:text-white">Home</Link></li>
-              <li><Link to="/orders" className="hover:text-white">My Orders</Link></li>
-              <li><Link to="/explore" className="hover:text-white">Offers &amp; Deals</Link></li>
+              <li><Link to="/" className="transition hover:text-[#FAF7F2]">Editorial Home</Link></li>
+              <li><Link to="/orders" className="transition hover:text-[#FAF7F2]">Order History</Link></li>
+              <li><Link to="/explore" className="transition hover:text-[#FAF7F2]">Seasonal Offers</Link></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="mb-4 text-base font-bold text-white">Top Cuisines</h4>
+            <h4 className="mb-4 text-[11px] font-bold tracking-[0.16em] text-[#FAF7F2] uppercase">
+              Cuisines
+            </h4>
             <ul className="flex flex-col gap-2.5 text-sm">
-              <li><Link to="/explore?category=north-indian" className="hover:text-white">North Indian</Link></li>
-              <li><Link to="/explore?category=pizza" className="hover:text-white">Woodfire Italian</Link></li>
-              <li><Link to="/explore?category=biryani" className="hover:text-white">Mughlai Dum Biryani</Link></li>
-              <li><Link to="/explore?category=chinese" className="hover:text-white">Asian Dim Sum</Link></li>
+              <li><Link to="/explore?category=north-indian" className="transition hover:text-[#FAF7F2]">North Indian</Link></li>
+              <li><Link to="/explore?category=south-indian" className="transition hover:text-[#FAF7F2]">South Indian Tiffin</Link></li>
+              <li><Link to="/explore?category=chinese" className="transition hover:text-[#FAF7F2]">Asian Wok &amp; Dim Sum</Link></li>
+              <li><Link to="/explore?category=desserts" className="transition hover:text-[#FAF7F2]">Artisanal Desserts</Link></li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-[#1E293B] pt-6 text-center text-sm">
-          <p>&copy; 2026 EatUp Technologies Pvt. Ltd. All rights reserved.</p>
-          <p className="mt-1 text-xs text-[#64748B]">
-            Delivering culinary excellence across Connaught Place, South Delhi, Gurugram &amp; Noida.
+        <div className="flex flex-col items-center justify-between gap-2 border-t border-[#292524] pt-6 text-xs sm:flex-row">
+          <p>&copy; 2026 EatUp Technologies Pvt. Ltd. Crafted for food lovers.</p>
+          <p className="text-[#78716C]">
+            Connaught Place · South Delhi · Gurugram · Noida
           </p>
         </div>
       </div>

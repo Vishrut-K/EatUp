@@ -383,17 +383,19 @@ export async function seedDatabaseIfEmpty() {
     );
   }
 
-  // Ensure demo user exists for 1-click evaluator login
-  const demoEmail = "demo@eatup.com";
-  const existingDemo = await User.findOne({ email: demoEmail });
-  if (!existingDemo) {
-    const passwordHash = await bcrypt.hash("password123", 10);
-    await User.create({
-      name: "Alex Morgan",
-      email: demoEmail,
-      passwordHash,
-      defaultPhone: "9876543210",
-      defaultAddress: "Flat 402, Sunshine Residency, Barakhamba Road, Connaught Place, New Delhi"
-    });
+  // Ensure demo user exists for 1-click evaluator login in non-production environments
+  if (process.env.NODE_ENV !== "production") {
+    const demoEmail = "demo@eatup.com";
+    const existingDemo = await User.findOne({ email: demoEmail });
+    if (!existingDemo) {
+      const passwordHash = await bcrypt.hash("password123", 10);
+      await User.create({
+        name: "Alex Morgan",
+        email: demoEmail,
+        passwordHash,
+        defaultPhone: "9876543210",
+        defaultAddress: "Flat 402, Sunshine Residency, Barakhamba Road, Connaught Place, New Delhi"
+      });
+    }
   }
 }

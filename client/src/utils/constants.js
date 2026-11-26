@@ -1,38 +1,33 @@
 export const FALLBACK_FOOD_IMG =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23F1F5F9'/%3E%3Ccircle cx='200' cy='140' r='60' fill='%23E2E8F0'/%3E%3Cpath d='M160 140 Q200 100 240 140' stroke='%23CBD5E1' stroke-width='8' fill='none' stroke-linecap='round'/%3E%3Ctext x='50%25' y='240' font-family='sans-serif' font-size='16' font-weight='600' fill='%2394A3B8' text-anchor='middle'%3EEatUp Delicacy%3C/text%3E%3C/svg%3E";
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23F3EDE2'/%3E%3Ccircle cx='200' cy='140' r='56' fill='%23EAE3D9'/%3E%3Cpath d='M165 142 Q200 104 235 142' stroke='%23C83E2B' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3Ctext x='50%25' y='236' font-family='Georgia, serif' font-size='18' font-style='italic' fill='%2357534E' text-anchor='middle'%3EEatUp Kitchen%3C/text%3E%3C/svg%3E";
 
 export const CATEGORIES = [
-  { id: "all", name: "All Dishes", icon: "🍽️" },
-  { id: "biryani", name: "Biryani", icon: "🥘" },
-  { id: "pizza", name: "Pizza", icon: "🍕" },
-  { id: "burgers", name: "Burgers", icon: "🍔" },
-  { id: "north-indian", name: "North Indian", icon: "🍛" },
-  { id: "south-indian", name: "South Indian", icon: "🥞" },
-  { id: "chinese", name: "Chinese", icon: "🍜" },
-  { id: "desserts", name: "Desserts", icon: "🍰" },
-  { id: "beverages", name: "Beverages", icon: "🥤" },
-  { id: "healthy", name: "Healthy Bowls", icon: "🥗" }
+  { id: "all", name: "All Kitchens", tag: "Curated" },
+  { id: "biryani", name: "Biryani", tag: "Slow Dum" },
+  { id: "pizza", name: "Woodfire Pizza", tag: "Artisanal" },
+  { id: "burgers", name: "Craft Burgers", tag: "Brioche" },
+  { id: "north-indian", name: "North Indian", tag: "Tandoor" },
+  { id: "south-indian", name: "South Indian", tag: "Tiffin" },
+  { id: "chinese", name: "Asian Wok", tag: "Dim Sum" },
+  { id: "desserts", name: "Desserts", tag: "Sweet" },
+  { id: "beverages", name: "Beverages", tag: "Crafted" },
+  { id: "healthy", name: "Healthy Bowls", tag: "Fresh" }
 ];
 
 export const PAYMENT_METHODS = [
   {
     value: "Cash on Delivery (Demo)",
-    title: "💵 Cash on Delivery",
-    subtitle: "Pay via cash or UPI scanner upon delivery"
+    title: "Cash on Delivery",
+    subtitle: "Pay via cash or UPI scanner at your doorstep"
   },
   {
     value: "UPI / QR Simulation",
-    title: "📱 Google Pay / PhonePe / Paytm",
-    subtitle: "Simulated instant UPI settlement"
+    title: "UPI Instant Pay",
+    subtitle: "Google Pay, PhonePe, Paytm or any BHIM UPI app"
   },
   {
     value: "Credit / Debit Card (Demo)",
-    title: "💳 Credit / Debit Card",
-    subtitle: "Simulated demo card checkout"
+    title: "Credit or Debit Card",
+    subtitle: "Visa, Mastercard, RuPay & Amex supported"
   }
 ];
-
-export const DEMO_CREDENTIALS = {
-  email: "demo@eatup.com",
-  password: "password123"
-};

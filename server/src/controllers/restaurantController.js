@@ -1,8 +1,8 @@
 import { Restaurant } from "../models/Restaurant.js";
 import { CATEGORIES } from "../services/seedService.js";
 
-function serializeRestaurantSummary(doc) {
-  return {
+function serializeRestaurantSummary(doc, includeMenu = true) {
+  const base = {
     id: doc.legacyId,
     _id: doc._id.toString(),
     name: doc.name,
@@ -16,8 +16,11 @@ function serializeRestaurantSummary(doc) {
     featured: doc.featured,
     discountBadge: doc.discountBadge,
     image: doc.image,
-    address: doc.address,
-    menu: doc.menu.map((m) => ({
+    address: doc.address
+  };
+
+  if (includeMenu) {
+    base.menu = doc.menu.map((m) => ({
       id: m.dishId,
       name: m.name,
       category: m.category,
@@ -28,8 +31,10 @@ function serializeRestaurantSummary(doc) {
       image: m.image,
       bestseller: m.bestseller,
       isAvailable: m.isAvailable
-    }))
-  };
+    }));
+  }
+
+  return base;
 }
 
 export async function getCategories(_req, res) {
@@ -92,7 +97,7 @@ export async function getRestaurants(req, res) {
 
   return res.json({
     success: true,
-    restaurants: list,
+    restaurants: list.map(({ menu: _menu, ...summary }) => summary),
     categories: CATEGORIES
   });
 }

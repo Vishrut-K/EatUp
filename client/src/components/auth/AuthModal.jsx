@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { Eye, EyeOff, Lock, Mail, User as UserIcon, X } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
-import { DEMO_CREDENTIALS } from "../../utils/constants";
 
 export function AuthModal() {
   const { authModalOpen, authModalMode, setAuthModalMode, closeAuthModal, login, register } = useAuth();
@@ -12,6 +12,7 @@ export function AuthModal() {
   const [signupName, setSignupName] = useState("");
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [alert, setAlert] = useState({ message: "", type: "" });
   const [submitting, setSubmitting] = useState(false);
 
@@ -19,14 +20,8 @@ export function AuthModal() {
 
   const handleClose = () => {
     setAlert({ message: "", type: "" });
+    setShowPassword(false);
     closeAuthModal();
-  };
-
-  const handleDemoFill = () => {
-    setAuthModalMode("login");
-    setLoginEmail(DEMO_CREDENTIALS.email);
-    setLoginPassword(DEMO_CREDENTIALS.password);
-    setAlert({ message: "Demo credentials filled! Click 'Sign In to EatUp' below.", type: "success" });
   };
 
   const handleLoginSubmit = async (e) => {
@@ -36,9 +31,9 @@ export function AuthModal() {
     try {
       const user = await login(loginEmail.trim(), loginPassword);
       handleClose();
-      showToast(`Welcome back, ${user.name}! 👋`);
+      showToast(`Welcome back, ${user.name}.`);
     } catch (err) {
-      setAlert({ message: err?.response?.data?.message || "Sign in failed.", type: "error" });
+      setAlert({ message: err?.response?.data?.message || "Invalid email or password.", type: "error" });
     } finally {
       setSubmitting(false);
     }
@@ -51,7 +46,7 @@ export function AuthModal() {
     try {
       const user = await register(signupName.trim(), signupEmail.trim(), signupPassword);
       handleClose();
-      showToast(`Account created! Welcome to EatUp, ${user.name}! 🎉`);
+      showToast(`Welcome to EatUp, ${user.name}.`);
     } catch (err) {
       setAlert({ message: err?.response?.data?.message || "Account creation failed.", type: "error" });
     } finally {
@@ -64,33 +59,40 @@ export function AuthModal() {
       onClick={(e) => {
         if (e.target === e.currentTarget) handleClose();
       }}
-      className="fixed inset-0 z-[2000] flex items-center justify-center bg-slate-900/65 p-5 backdrop-blur-xs"
+      className="fixed inset-0 z-[2000] flex items-center justify-center bg-[#1C1917]/65 p-4 backdrop-blur-xs"
     >
-      <div className="relative w-full max-w-[440px] overflow-hidden rounded-[18px] bg-white shadow-2xl">
+      <div className="relative w-full max-w-[440px] overflow-hidden rounded-3xl border border-[#EAE3D9] bg-[#FAF7F2] shadow-2xl">
         <button
           type="button"
           onClick={handleClose}
           aria-label="Close modal"
-          className="absolute top-4 right-4 z-10 text-2xl leading-none text-[#8E9BAE] hover:text-[#111827]"
+          className="absolute top-4 right-4 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-[#EAE3D9] bg-white text-[#57534E] transition hover:border-[#1C1917] hover:text-[#1C1917]"
         >
-          &times;
+          <X className="h-4 w-4" />
         </button>
 
-        <div className="px-7 pt-6 pb-4 text-center">
-          <h3 className="mb-1 text-2xl font-extrabold text-[#111827]">Welcome to EatUp</h3>
-          <p className="text-sm text-[#4B5563]">Sign in or create an account to order food</p>
+        <div className="border-b border-[#EAE3D9] bg-white px-7 pt-7 pb-0 text-center">
+          <span className="mb-2 inline-block text-[10px] font-bold tracking-[0.18em] text-[#C83E2B] uppercase">
+            Member Access
+          </span>
+          <h3 className="font-editorial text-3xl tracking-tight text-[#1C1917]">
+            Welcome to <span className="italic text-[#C83E2B]">EatUp.</span>
+          </h3>
+          <p className="mt-1 text-xs text-[#57534E]">
+            Sign in or create an account to order &amp; host group tables
+          </p>
 
-          <div className="mt-4 flex border-b border-[#E5EBE7]">
+          <div className="mt-5 flex">
             <button
               type="button"
               onClick={() => {
                 setAuthModalMode("login");
                 setAlert({ message: "", type: "" });
               }}
-              className={`flex-1 border-b-2 py-3 text-[0.95rem] font-bold transition ${
+              className={`flex-1 border-b-2 py-3 text-sm font-bold transition ${
                 authModalMode === "login"
-                  ? "border-[#0D7A53] text-[#0D7A53]"
-                  : "border-transparent text-[#8E9BAE]"
+                  ? "border-[#C83E2B] text-[#C83E2B]"
+                  : "border-transparent text-[#A8A29E] hover:text-[#1C1917]"
               }`}
             >
               Sign In
@@ -101,10 +103,10 @@ export function AuthModal() {
                 setAuthModalMode("signup");
                 setAlert({ message: "", type: "" });
               }}
-              className={`flex-1 border-b-2 py-3 text-[0.95rem] font-bold transition ${
+              className={`flex-1 border-b-2 py-3 text-sm font-bold transition ${
                 authModalMode === "signup"
-                  ? "border-[#0D7A53] text-[#0D7A53]"
-                  : "border-transparent text-[#8E9BAE]"
+                  ? "border-[#C83E2B] text-[#C83E2B]"
+                  : "border-transparent text-[#A8A29E] hover:text-[#1C1917]"
               }`}
             >
               Create Account
@@ -112,28 +114,13 @@ export function AuthModal() {
           </div>
         </div>
 
-        <div className="px-7 pt-5 pb-7">
-          <div className="mb-5 flex items-center justify-between rounded-xl border border-dashed border-[#0D7A53] bg-[#EBF7F1] px-3.5 py-3">
-            <div className="text-xs font-semibold text-[#0D7A53]">
-              <strong>Quick Demo Account</strong>
-              <br />
-              {DEMO_CREDENTIALS.email}
-            </div>
-            <button
-              type="button"
-              onClick={handleDemoFill}
-              className="rounded-full bg-[#0D7A53] px-3 py-1.5 text-xs font-extrabold text-white transition hover:bg-[#086041]"
-            >
-              1-Click Auto Fill
-            </button>
-          </div>
-
+        <div className="px-7 py-6">
           {alert.message && (
             <div
-              className={`mb-4 rounded-lg border px-3.5 py-2.5 text-sm font-semibold ${
+              className={`mb-4 rounded-xl border px-3.5 py-2.5 text-xs font-semibold ${
                 alert.type === "success"
-                  ? "border-green-200 bg-[#DCFCE7] text-[#15803D]"
-                  : "border-red-200 bg-[#FEE2E2] text-[#B91C1C]"
+                  ? "border-[#2D5A3C]/20 bg-[#EAF2EC] text-[#2D5A3C]"
+                  : "border-[#C83E2B]/20 bg-[#FBECE9] text-[#C83E2B]"
               }`}
             >
               {alert.message}
@@ -143,37 +130,55 @@ export function AuthModal() {
           {authModalMode === "login" ? (
             <form onSubmit={handleLoginSubmit} className="space-y-4">
               <div>
-                <label className="mb-1.5 block text-sm font-bold text-[#4B5563]" htmlFor="login-email">
+                <label className="mb-1.5 block text-xs font-bold tracking-wider text-[#57534E] uppercase" htmlFor="login-email">
                   Email Address
                 </label>
-                <input
-                  id="login-email"
-                  type="email"
-                  required
-                  value={loginEmail}
-                  onChange={(e) => setLoginEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  className="w-full rounded-lg border-[1.5px] border-[#E5EBE7] px-3.5 py-3 text-[0.95rem] outline-none focus:border-[#0D7A53]"
-                />
+                <div className="relative">
+                  <Mail className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#A8A29E]" />
+                  <input
+                    id="login-email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className="w-full rounded-xl border border-[#EAE3D9] bg-white py-3 pr-3.5 pl-10 text-sm text-[#1C1917] outline-none transition focus:border-[#C83E2B]"
+                  />
+                </div>
               </div>
+
               <div>
-                <label className="mb-1.5 block text-sm font-bold text-[#4B5563]" htmlFor="login-password">
+                <label className="mb-1.5 block text-xs font-bold tracking-wider text-[#57534E] uppercase" htmlFor="login-password">
                   Password
                 </label>
-                <input
-                  id="login-password"
-                  type="password"
-                  required
-                  value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full rounded-lg border-[1.5px] border-[#E5EBE7] px-3.5 py-3 text-[0.95rem] outline-none focus:border-[#0D7A53]"
-                />
+                <div className="relative">
+                  <Lock className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#A8A29E]" />
+                  <input
+                    id="login-password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    autoComplete="current-password"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    className="w-full rounded-xl border border-[#EAE3D9] bg-white py-3 pr-10 pl-10 text-sm text-[#1C1917] outline-none transition focus:border-[#C83E2B]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-[#A8A29E] hover:text-[#1C1917]"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
               </div>
+
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full rounded-lg bg-gradient-to-br from-[#0D7A53] to-[#149666] py-3 text-base font-extrabold text-white transition hover:opacity-95 disabled:opacity-60"
+                className="w-full rounded-full bg-[#C83E2B] py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#A62F1F] disabled:opacity-60"
               >
                 {submitting ? "Signing In..." : "Sign In to EatUp"}
               </button>
@@ -181,54 +186,78 @@ export function AuthModal() {
           ) : (
             <form onSubmit={handleSignupSubmit} className="space-y-4">
               <div>
-                <label className="mb-1.5 block text-sm font-bold text-[#4B5563]" htmlFor="signup-name">
+                <label className="mb-1.5 block text-xs font-bold tracking-wider text-[#57534E] uppercase" htmlFor="signup-name">
                   Full Name
                 </label>
-                <input
-                  id="signup-name"
-                  type="text"
-                  required
-                  value={signupName}
-                  onChange={(e) => setSignupName(e.target.value)}
-                  placeholder="e.g. Alex Morgan"
-                  className="w-full rounded-lg border-[1.5px] border-[#E5EBE7] px-3.5 py-3 text-[0.95rem] outline-none focus:border-[#0D7A53]"
-                />
+                <div className="relative">
+                  <UserIcon className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#A8A29E]" />
+                  <input
+                    id="signup-name"
+                    type="text"
+                    required
+                    minLength={2}
+                    autoComplete="name"
+                    value={signupName}
+                    onChange={(e) => setSignupName(e.target.value)}
+                    placeholder="Your full name"
+                    className="w-full rounded-xl border border-[#EAE3D9] bg-white py-3 pr-3.5 pl-10 text-sm text-[#1C1917] outline-none transition focus:border-[#C83E2B]"
+                  />
+                </div>
               </div>
+
               <div>
-                <label className="mb-1.5 block text-sm font-bold text-[#4B5563]" htmlFor="signup-email">
+                <label className="mb-1.5 block text-xs font-bold tracking-wider text-[#57534E] uppercase" htmlFor="signup-email">
                   Email Address
                 </label>
-                <input
-                  id="signup-email"
-                  type="email"
-                  required
-                  value={signupEmail}
-                  onChange={(e) => setSignupEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  className="w-full rounded-lg border-[1.5px] border-[#E5EBE7] px-3.5 py-3 text-[0.95rem] outline-none focus:border-[#0D7A53]"
-                />
+                <div className="relative">
+                  <Mail className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#A8A29E]" />
+                  <input
+                    id="signup-email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={signupEmail}
+                    onChange={(e) => setSignupEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className="w-full rounded-xl border border-[#EAE3D9] bg-white py-3 pr-3.5 pl-10 text-sm text-[#1C1917] outline-none transition focus:border-[#C83E2B]"
+                  />
+                </div>
               </div>
+
               <div>
-                <label className="mb-1.5 block text-sm font-bold text-[#4B5563]" htmlFor="signup-password">
+                <label className="mb-1.5 block text-xs font-bold tracking-wider text-[#57534E] uppercase" htmlFor="signup-password">
                   Password (min 6 chars)
                 </label>
-                <input
-                  id="signup-password"
-                  type="password"
-                  required
-                  minLength={6}
-                  value={signupPassword}
-                  onChange={(e) => setSignupPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full rounded-lg border-[1.5px] border-[#E5EBE7] px-3.5 py-3 text-[0.95rem] outline-none focus:border-[#0D7A53]"
-                />
+                <div className="relative">
+                  <Lock className="absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#A8A29E]" />
+                  <input
+                    id="signup-password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    minLength={6}
+                    autoComplete="new-password"
+                    value={signupPassword}
+                    onChange={(e) => setSignupPassword(e.target.value)}
+                    placeholder="Create a strong password"
+                    className="w-full rounded-xl border border-[#EAE3D9] bg-white py-3 pr-10 pl-10 text-sm text-[#1C1917] outline-none transition focus:border-[#C83E2B]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-[#A8A29E] hover:text-[#1C1917]"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
               </div>
+
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full rounded-lg bg-gradient-to-br from-[#0D7A53] to-[#149666] py-3 text-base font-extrabold text-white transition hover:opacity-95 disabled:opacity-60"
+                className="w-full rounded-full bg-[#C83E2B] py-3.5 text-sm font-bold text-white shadow-md transition hover:bg-[#A62F1F] disabled:opacity-60"
               >
-                {submitting ? "Creating Account..." : "Create My Account"}
+                {submitting ? "Creating Account..." : "Create Account"}
               </button>
             </form>
           )}

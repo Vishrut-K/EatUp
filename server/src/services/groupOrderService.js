@@ -1,8 +1,11 @@
+import { randomInt } from "crypto";
 import { GroupOrder } from "../models/GroupOrder.js";
 import { Restaurant } from "../models/Restaurant.js";
 import { Order } from "../models/Order.js";
 import { calculateGroupBill } from "./billingService.js";
-import { generateOrderNumber } from "../controllers/orderController.js";
+import { generateUniqueOrderNumber } from "../controllers/orderController.js";
+
+const PHONE_REGEX = /^\d{10}$/;
 
 // Per-room async mutex to prevent concurrent read-modify-write races
 const roomLocks = new Map();
@@ -38,9 +41,19 @@ export function generateRoomCode() {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let code = "";
   for (let i = 0; i < 6; i += 1) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
+    code += chars.charAt(randomInt(chars.length));
   }
   return code;
+}
+
+async function generateUniqueRoomCode(maxAttempts = 10) {
+  for (let i = 0; i < maxAttempts; i += 1) {
+    const candidate = generateRoomCode();
+    if (!(await GroupOrder.exists({ roomCode: candidate }))) {
+      return candidate;
+    }
+  }
+  throw createServiceError("Unable to generate a unique room code. Please try again.", 503);
 }
 
 export function serializeGroupOrder(doc) {
@@ -99,10 +112,7 @@ export async function createGroupRoom({ user, restaurantId = null }) {
     restaurantName = rest.name;
   }
 
-  let roomCode = generateRoomCode();
-  while (await GroupOrder.exists({ roomCode })) {
-    roomCode = generateRoomCode();
-  }
+  const roomCode = await generateUniqueRoomCode();
 
   const room = await GroupOrder.create({
     roomCode,
@@ -347,6 +357,9 @@ export async function finalizeGroupOrder({ roomCode, user, recipientName, phone,
     if (!cleanName || !cleanPhone || !cleanAddress) {
       throw createServiceError("Please fill in all delivery details.", 400);
     }
+    if (!PHONE_REGEX.test(cleanPhone)) {
+      throw createServiceError("Please enter a valid 10-digit phone number.", 400);
+    }
 
     const restaurant = await Restaurant.findOne({ legacyId: room.restaurantId }).lean();
     if (!restaurant) {
@@ -373,10 +386,7 @@ export async function finalizeGroupOrder({ roomCode, user, recipientName, phone,
       room.creatorId.toString()
     );
 
-    let orderNumber = generateOrderNumber();
-    while (await Order.exists({ orderNumber })) {
-      orderNumber = generateOrderNumber();
-    }
+    const orderNumber = await generateUniqueOrderNumber();
 
     const order = await Order.create({
       orderNumber,
